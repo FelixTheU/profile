@@ -1,0 +1,66 @@
+;;; doxymacs-autoloads.el --- automatically extracted autoloads
+;;
+;;; Code:
+(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+
+;;;### (autoloads nil "doxymacs" "doxymacs.el" (22578 41049 948496
+;;;;;;  66000))
+;;; Generated autoloads from doxymacs.el
+
+(or (assoc 'doxymacs-mode minor-mode-alist) (setq minor-mode-alist (cons '(doxymacs-mode " doxy") minor-mode-alist)))
+
+;;;***
+
+;;;### (autoloads nil "xml-parse" "xml-parse.el" (22467 37367 710480
+;;;;;;  613000))
+;;; Generated autoloads from xml-parse.el
+
+(autoload 'read-xml "xml-parse" "\
+Parse XML data at point into a Lisp structure.
+See `insert-xml' for a description of the format of this structure.
+Point is left at the end of the XML structure read.
+
+\(fn &optional PROGRESS-CALLBACK)" nil nil)
+
+(autoload 'insert-xml "xml-parse" "\
+Insert DATA, a recursive Lisp structure, at point as XML.
+DATA has the form:
+
+  ENTRY       ::=  (TAG CHILD*)
+  CHILD       ::=  STRING | ENTRY
+  TAG         ::=  TAG_NAME | (TAG_NAME ATTR+)
+  ATTR        ::=  (ATTR_NAME . ATTR_VALUE)
+  TAG_NAME    ::=  STRING
+  ATTR_NAME   ::=  STRING
+  ATTR_VALUE  ::=  STRING
+
+If ADD-NEWLINES is non-nil, newlines and indentation will be added to
+make the data user-friendly.
+
+If PUBLIC and SYSTEM are non-nil, a !DOCTYPE tag will be added at the
+top of the document to identify it as an XML document.
+
+DEPTH is normally for internal use only, and controls the depth of the
+indentation.
+
+\(fn DATA &optional ADD-NEWLINES PUBLIC SYSTEM DEPTH RET-DEPTH)" nil nil)
+
+(autoload 'xml-reformat-tags "xml-parse" "\
+If point is on the open bracket of an XML tag, reformat that tree.
+Note that this only works if the opening tag starts at column 0.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("doxymacs-pkg.el") (22578 41049 979718
+;;;;;;  36000))
+
+;;;***
+
+;; Local Variables:
+;; version-control: never
+;; no-byte-compile: t
+;; no-update-autoloads: t
+;; End:
+;;; doxymacs-autoloads.el ends here
