@@ -11,7 +11,7 @@
 ;;;                             加入行高亮，列高亮功能
 ;;;                             默认总是启用 server 模式，随时准备 emacsclient 极速连接
 ;;; record4 09:55 2016/12/28 -> 添加 highlight-parentheses 插件，彩色高亮配对括号
-;;; record5 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于Makefile 很重要 
+;;; record5 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于Makefile 很重要
 ;;; code:
 
 (custom-set-variables
@@ -34,6 +34,9 @@
     ("a8ed07d9e93f48b8ce5a2b5a0c734e8d0c851fd06b6f41e1e5d5ef95f04f844e" "dcf80f91cba25952b0848b8ff224b29c7dcc316d21a82c9cf249372cc167efef" "492f5ab818fa899269c6c1d1781646ed78c8e1100221a1a6ca3ba3f9c1e072fe" "cc152af53bde6f2ea12bf06a5ced8388370d3ae1557d27dc42e94cb89cf1073d" "4ef40cda673cf1a547c0203c9c7af5c32445975974f16edf8390ce99b552117f" "4fc466d75fc9bafea57c90159e49b6e30f1546f4aa41ee9af1f1cb66733aec9c" "8348a530d33d5bb34f8d8ef5ccbb7a82aff07cedf837d8ae04ea43de4858028f" "7f0b7f9ab6474d82b6e88d38c0891c9f69b7b6944df0da6ba908eb707cd1a4e1" "526a499cb6c3611b9021ff02facd7313f22fa16800a970b052ddc64316789829" "7cd6ab2797758c4909e924148ef0d27882f2ed37b263cb3e427ecea438fbe2bc" "0579868cfe1ae8b3c7538402f649733397047bc2be89623d14b9d257ba985bbc" "3a22fb5164fdaed60123fb5d5346455b96f8ec83e8f18d24db1168c312ece3d7" "64ca516f4288e3be9694c295f4a098802131b93dd07bfd52d8a5d578ae8f0a2e" "ed98d5f543bf9b2f8da75378eef59977a4d47a7e36410218cd4ac542fd3d7143" "7944a0d11f4b87e645b5c99c3f8072f77d0ba3b71938b31385372141ef88aad0" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
  '(doxymacs-doxygen-style "C++")
  '(flycheck-keymap-prefix "c")
+ '(package-selected-packages
+   (quote
+    (helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil))
@@ -73,7 +76,7 @@
 (setq backup-directory-alist (quote (("." . "~/.backups"))))
 
 ;; 总是启动 server 模式，应对每次 emacs 启动缓慢问题                10:52 2016/12/15
-(server-start)
+; (server-start)
 
 (put 'upcase-region 'disabled nil)
 
@@ -178,8 +181,8 @@
 (add-hook 'after-init-hook 'yas-global-mode)
 
 ;; helm (ELPA 安装) 管理文件与buffer（与ido 类型）
-;(require 'helm-config)
-;(global-set-key (kbd "M-X") 'helm-M-x)
+(require 'helm-config)
+(global-set-key (kbd "M-X") 'helm-M-x)
 
 ;; company 补全配置
 (add-hook 'prog-mode-hook 'company-mode)
@@ -389,7 +392,7 @@
                   :slant 'normal
                   :size 11.5))
 
-; 仅在图形界面下设置字体    19:26 2016/12/07
+; 仅在图形界面下设置字体                        19:26 2016/12/07
 (if (display-graphic-p)
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
       (set-fontset-font
@@ -400,4 +403,6 @@
                   :slant 'normal
                   :size 13.5))))
 
+; 总是打开符号链接指向的文件，别老问我了        14:04 2017/06/18
+(setq vc-follow-symlinks t)
 ;;; .emacs ends here
