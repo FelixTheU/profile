@@ -53,7 +53,6 @@ map ds :%s/\s\+$//g<CR>
 set noswapfile                          "不生成.swp文件
 set bg=dark                             "黑色背景
 set completeopt=menu                    "关闭草稿
-set nonu                                "显示行号
 set paste                               "粘贴时 禁止自动缩进
 set ruler                               "右下角显示光标当前位置
 set scrolloff=10                        "光标到上下缓冲区边距
