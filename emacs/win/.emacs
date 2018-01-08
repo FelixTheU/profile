@@ -13,7 +13,7 @@
 )
 
 ;; config for windows
-(setenv "HOME" "D:/Program Files/emacs-25.2")
-(setenv "PATH" "D:/Program Files/emacs-25.2")
+(setenv "HOME" "D:/Program Files/emacs")
+(setenv "PATH" "D:/Program Files/emacs")
 (setq default-directory "~/")
 (load-file "~/.emacs")
