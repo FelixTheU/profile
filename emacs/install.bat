@@ -2,16 +2,18 @@
 echo off
 
 set emacs_preload_path="C:\Users\zhengsw\AppData\Roaming\.emacs"
-set emacs_install_dir="D:\Program Files\emacs\"
+set babun_home_dir="D:\Programs\.babun\cygwin\home\zhengsw\"
 set current_dir=%~dp0
 
-rem 1) ÎªÔ¤¼ÓÔØÎÄ¼ş½¨Á¢·ûºÅÁ´½Ó
+rem 1) é…ç½®é¢„åŠ è½½ .emacs æ–‡ä»¶
 mklink %emacs_preload_path% %current_dir%win\.emacs
 
-rem 2) Îª .emacs ½¨Á¢·ûºÅÁ´½Ó
-mklink %emacs_install_dir%.emacs %current_dir%.emacs
+rem 2) é…ç½® home ç›®å½•ä¸‹çš„ .emacs æ–‡ä»¶
+mklink %babun_home_dir%.emacs %current_dir%.emacs
 
-rem 3) Îª .emacs.d ½¨Á¢·ûºÅÁ´½Ó
-mklink /D %emacs_install_dir%.emacs.d %current_dir%.emacs.d
+rem 3) é…ç½® home ç›®å½•ä¸‹çš„ .emacs.d æ–‡ä»¶
+rem    mklink äº§ç”Ÿçš„è½¯é“¾æ¥å¯ä»¥è¢« babun ç‰ˆæœ¬çš„ç¨‹åºè¯†åˆ«ï¼Œ
+rem    ä½† ln -s åˆ›å»ºçš„è½¯é“¾æ¥å´ä¸èƒ½è¢« windows ç‰ˆæœ¬ gui emacs è¯†åˆ«
+mklink /D %babun_home_dir%.emacs.d %current_dir%.emacs.d
 
 pause

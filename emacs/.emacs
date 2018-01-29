@@ -13,6 +13,7 @@
 ;;; record4 09:55 2016/12/28 -> 添加 highlight-parentheses 插件，彩色高亮配对括号
 ;;; record5 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于 Makefile 很重要
 ;;; record6 12:50 2017/09/10 -> 添加 slime ，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
+;;; record7 13:15 2018/01/29 -> 配置 windows 版本下的 tramp 默认使用 plink 进行远程连接
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -67,7 +68,7 @@
 (setq gnus-inhibit-startup-message t)
 
 ;; 设置窗口默认大小                                                 15:48 2013/03/06
-(setq default-frame-alist '((height . 50) (width . 180)))
+(setq default-frame-alist '((height . 30) (width . 150)))
 
 ;; 总是显示行号, 列号                                               20:26 2014/10/18
 (global-linum-mode 1)
@@ -102,8 +103,15 @@
 ;;       show-paren-style 'parenthesis)
 ;; (show-paren-mode 1)
 
+;;  _____ ___    _   __  __ ___
+;; |_   _| _ \  /_\ |  \/  | _ \
+;;   | | |   / / _ \| |\/| |  _/
+;;   |_| |_|_\/_/ \_\_|  |_|_|
 ;; 设置远程连接的默认方法                                           11:51 2016/12/15
 (setq tramp-default-method "ssh")
+;; windows gui 版本 emacs 无法使用 ssh，使用 plink 好了             12:41 2018/01/29
+(when (eq window-system 'w32)
+  (setq tramp-default-method "plink"))
 
 ;; 解决登入远程 shell 输入冒号时卡死问题                            13:00 2016/12/15
 (setq tramp-ssh-controlmaster-options
@@ -306,7 +314,7 @@
  :font (font-spec :name "-APPL-Monaco-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
                   :weight 'normal
                   :slant 'normal
-                  :size 12.5))
+                  :size 11.5))          ;; ever 12
 
 ; 仅在图形界面下设置字体                        19:26 2016/12/07
 (if (display-graphic-p)
@@ -317,7 +325,7 @@
        (font-spec :name "-WenQ-文泉驿等宽正黑-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
                   :weight 'normal
                   :slant 'normal
-                  :size 14))))
+                  :size 13.5))))        ;; ever 14
 
 ;;  _  _ ___ ___ _  _ _    ___ ___ _  _ _____    ___  _   ___ ___ _  _ _____ _  _
 ;; | || |_ _/ __| || | |  |_ _/ __| || |_   _|__| _ \/_\ | _ \ __| \| |_   _| || |
