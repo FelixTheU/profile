@@ -1,19 +1,18 @@
-;; Added by Package.el.  This must come before configurations of
+ï»¿;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-;; ÉèÖÃÀ¬»ø»ØÊÕ£¬ÔÚWindowsÏÂ£¬emacs25°æ±¾»áÆµ·±³ö·¢À¬»ø»ØÊÕ£¬Ôì³É¿¨¶Ù
+;; è®¾ç½®åƒåœ¾å›æ”¶ï¼Œåœ¨Windowsä¸‹ï¼Œemacs25ç‰ˆæœ¬ä¼šé¢‘ç¹å‡ºå‘åƒåœ¾å›æ”¶ï¼Œé€ æˆå¡é¡¿
 (when (eq system-type 'windows-nt)
   (setq gc-cons-threshold (* 512 1024 1024))
   (setq gc-cons-percentage 0.5)
   (run-with-idle-timer 5 t #'garbage-collect)
-  ;; (setq garbage-collection-messages t)           ;; ÏÔÊ¾À¬»ø»ØÊÕĞÅÏ¢£¬Õâ¸ö¿ÉÒÔ×÷Îªµ÷ÊÔÓÃ
+  ;; (setq garbage-collection-messages t)           ;; æ˜¾ç¤ºåƒåœ¾å›æ”¶ä¿¡æ¯ï¼Œè¿™ä¸ªå¯ä»¥ä½œä¸ºè°ƒè¯•ç”¨
 )
 
 ;; config for windows
-(setenv "HOME" "D:/Program Files/emacs-25.2")
-(setenv "PATH" "D:/Program Files/emacs-25.2")
+(setenv "HOME" "D:/Programs/.babun/cygwin/home/zhengsw")
 (setq default-directory "~/")
 (load-file "~/.emacs")
