@@ -3,16 +3,17 @@
 ;;; author: Felix Zheng.
 ;;; mail:ifelixzheng@163.com
 ;;; date: 04:30 2016/07/10
-;;; record0 04:32 2016/07/10 -> 配置各种插件，补全、代码跳转、代码导航等
-;;; record1 13:00 2016/08/29 -> 添加 expand-region 和 highlight-symbol
-;;; record2 20:15 2016/12/07 -> 解决在 shell 中运行时报没有 tty 字体问题;
-;;;                             重新实现 if-zero-code 对换行结尾的区域更友好
-;;; record3 13:51 2016/12/15 -> 解决 tramp 打开远程文件或者 /su::/root/... 输入显示卡死问题
-;;;                             加入行高亮，列高亮功能
-;;;                             默认总是启用 server 模式，随时准备 emacsclient 极速连接
-;;; record4 09:55 2016/12/28 -> 添加 highlight-parentheses 插件，彩色高亮配对括号
-;;; record5 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于 Makefile 很重要
-;;; record6 12:50 2017/09/10 -> 添加 slime ，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
+;;; record_00 04:32 2016/07/10 -> 配置各种插件，补全、代码跳转、代码导航等
+;;; record_01 13:00 2016/08/29 -> 添加 expand-region 和 highlight-symbol
+;;; record_02 20:15 2016/12/07 -> 解决在 shell 中运行时报没有 tty 字体问题;
+;;;                               重新实现 if-zero-code 对换行结尾的区域更友好
+;;; record_03 13:51 2016/12/15 -> 解决 tramp 打开远程文件或者 /su::/root/... 输入显示卡死问题
+;;;                               加入行高亮，列高亮功能
+;;;                               默认总是启用 server 模式，随时准备 emacsclient 极速连接
+;;; record_04 09:55 2016/12/28 -> 添加 highlight-parentheses 插件，彩色高亮配对括号
+;;; record_05 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于 Makefile 很重要
+;;; record_06 12:50 2017/09/10 -> 添加 slime，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
+;;; record_07 23:44 2018/01/30 -> 添加 gtags, magit, 以及配置 python-mode 下缩进为4个空格
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -42,10 +43,11 @@
  '(flycheck-keymap-prefix "c")
  '(package-selected-packages
    (quote
-    (exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+    (ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil))
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -116,7 +118,7 @@
   (when buffer-file-name
     (find-alternate-file
      (concat "/sudo:root@localhost:"
-	     buffer-file-name))))
+         buffer-file-name))))
 (global-set-key (kbd "C-x C-r") 'find-alternative-file-with-sudo)
 
 ;;  _  _______   __   ___ ___ _  _ ___ ___ _  _  ___ ___
@@ -151,7 +153,7 @@
   (interactive)
   (save-buffer)
   (shell-command (concat "./"
-			  (buffer-name))))
+              (buffer-name))))
 (global-set-key (kbd "C-x c") 'run-script-without-input)
 (fset 'enter-macro [return])
 
@@ -212,7 +214,7 @@
 (defun my-comment-or-uncomment-region (beg end &optional arg)
   "Comment a line when there is no region marked.BEG END ARG."
   (interactive
-   (if	(use-region-p)
+   (if  (use-region-p)
        (list (region-beginning) (region-end) nil)
      (list (line-beginning-position) (line-beginning-position 2))
      ))
@@ -237,11 +239,11 @@
 (require 'hideif)
 (setq hide-ifdef-initially t)
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (setq hide-ifdef-shadow t)
-	    (setq hide-ifdef-mode t)
-	    (hide-ifdefs)
-		))
+      (lambda ()
+        (setq hide-ifdef-shadow t)
+        (setq hide-ifdef-mode t)
+        (hide-ifdefs)
+        ))
 
 ;;                                                          ____   _    ____ _  __    _    ____ _____ ____
 ;;    _     _     _     _     _     _     _     _     _    |  _ \ / \  / ___| |/ /   / \  / ___| ____/ ___|     _     _     _     _     _     _     _     _     _     _     _
@@ -257,11 +259,11 @@
 ;; 添加新的 ELPA 插件源                                             03:41 2016/07/10
 (require 'package)
 (add-to-list 'package-archives'
-	     ("elpa" . "http://tromey.com/elpa/") t)
+             ("elpa" . "http://tromey.com/elpa/") t)
 ;; (add-to-list 'package-archives'
-;; 	     ("marmalade" . "http://marmalade-repo.org/packages/") t)
+;;       ("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives'
-     ("melpa" . "http://melpa.milkbox.net/packages/") t)
+             ("melpa"    . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
 ;; __  ____  ____  ____  ____  ____  ____  ____  __  ____    _    ____ ___ ____  __  ____  ____  ____  ____  ____  ____  ____  __
@@ -426,7 +428,7 @@
   "Emacs quick move minor mode"
   t)
 (define-key global-map (kbd "C-c i") 'ace-jump-char-mode) ; i for where i want
-(define-key global-map (kbd "C-c h") 'ace-jump-mode)	  ; h for word's head char
+(define-key global-map (kbd "C-c h") 'ace-jump-mode)      ; h for word's head char
 ;; enable a more powerful jump back function from ace jump mode-compile;;
 (autoload  'ace-jump-mode-pop-mark
   "ace-jump-mode"
@@ -455,7 +457,7 @@
 
 ;;  _____  _____  _   _  _ ___      ___ ___ ___ ___ ___  _  _
 ;; | __\ \/ / _ \/_\ | \| |   \ ___| _ \ __/ __|_ _/ _ \| \| |
-;; | _| >  <|  _/ _ \| .` | |) |___|   / _| (_ || | (_) | .` |
+;; | _| >  <|  _/ _ \| .` | |) |___|   / _| (_ || | (_) | . ` |
 ;; |___/_/\_\_|/_/ \_\_|\_|___/    |_|_\___\___|___\___/|_|\_|
 
 ;; expand-region
@@ -537,6 +539,18 @@
              (cscope-setup)
              ))
 
+;;   ___ _____ _   ___ ___
+;;  / __|_   _/_\ / __/ __|
+;; | (_ | | |/ _ \ (_ \__ \
+;;  \___| |_/_/ \_\___|___/
+
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          '(lambda()
+             (ggtags-mode)
+             ))
+(setq gtags-suggested-key-mapping t)
+
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
 ;; | __| |\ \ / / __| || | __/ __| |/ /
 ;; | _|| |_\ V / (__| __ | _| (__| ' <
@@ -570,9 +584,9 @@
 ;; 添加补全后端，补全头文件
 ;; 或者 hook global-company-mode-hook
 (add-hook 'c-mode-common-hook
-	  '(lambda()
-	     (add-to-list 'company-backends
-                      'company-c-headers)))
+          '(lambda()
+             (add-to-list 'company-backends
+                          'company-c-headers)))
 
 ;;  ___   _____  ____   ____  __   _   ___ ___
 ;; |   \ / _ \ \/ /\ \ / /  \/  | /_\ / __/ __|
@@ -583,7 +597,7 @@
 (require 'doxymacs)
 ;; 注释高亮，针对C和C++程序
 (defun my-doxymacs-font-lock-hook ()
-  "Doxymacs fonts lock."
+  "Doxymacs fonts lock . "
   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
       (doxymacs-font-lock)))
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
@@ -608,4 +622,22 @@
 (add-to-list 'load-path "~/.emacs.d/slime-2.19/")
 (require 'slime)
 (slime-setup)
+
+;;  __  __   _   ___ ___ _____
+;; |  \/  | /_\ / __|_ _|_   _|
+;; | |\/| |/ _ \ (_ || |  | |
+;; |_|  |_/_/ \_\___|___| |_|
+
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+
+;;  _____   _______ _  _  ___  _  _
+;; | _ \ \ / /_   _| || |/ _ \| \| |
+;; |  _/\ V /  | | | __ | (_) | .` |
+;; |_|   |_|   |_| |_||_|\___/|_|\_|
+
+(add-hook 'python-mode-hook
+          (lambda () (setq tab-width 4)))
+
 ;;; .emacs ends here

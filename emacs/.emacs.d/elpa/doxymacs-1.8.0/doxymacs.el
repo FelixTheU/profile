@@ -1176,8 +1176,8 @@ the completion or nil if canceled by the user."
      " * 版    本 : Rev 0.1.0" > n
      " *- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" > n
      ;; date 命令会输出换行，不友好呀
-     " * 设    计 : " (user-full-name) "      '" (shell-command-to-string "date +%F")
-     " * 编    码 : " (user-full-name) "      '" (shell-command-to-string "date +%F")
+     "* 设    计 : " (user-full-name) "      '" (shell-command-to-string "date +%F")
+     "* 编    码 : " (user-full-name) "      '" (shell-command-to-string "date +%F")
      " * 修    改 : " > n
 
      " ****************************************************************************************" > n
