@@ -15,6 +15,9 @@
 ;;; record_06 12:50 2017/09/10 -> 添加 slime，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
 ;;; record_07 13:15 2018/01/29 -> 配置 windows 版本下的 tramp 默认使用 plink 进行远程连接
 ;;; record_08 23:44 2018/01/30 -> 添加 gtags, magit, 以及配置 python-mode 下缩进为4个空格
+;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c C-;), 调整 align 快捷键为 C-c C-l;
+;;;                               添加一众 er/mark-xxx 快捷键；
+;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -210,7 +213,9 @@
 (global-set-key (kbd "C-c k") 'ff-find-other-file)
 
 ;; 对齐
-(global-set-key (kbd "C-c l") 'align)
+(global-set-key (kbd "C-c C-l") 'align)
+(global-set-key (kbd "C-c C-;") 'align-regexp)
+
 
 ;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
 (add-hook 'prog-mode-hook
@@ -370,8 +375,9 @@
 ;; |___|___/|____|___|  |_||_|___\___|_||_|____|___\___|_||_| |_|
 
 ;; idle-highlight 高亮当前选中符号 自动对所有语言开启
-(require 'idle-highlight)
-(add-hook 'prog-mode-hook 'idle-highlight)
+;; 由于高亮使用了和“mark”一样的颜色，有时会有干扰，在无法修改其颜色之前，屏蔽 -- 23:03 2018/03/21
+;; (require 'idle-highlight)
+;; (add-hook 'prog-mode-hook 'idle-highlight)
 
 ;;  _  _ ___ ___ _  _ _    ___ ___ _  _ _____    _____   ____  __ ___  ___  _
 ;; | || |_ _/ __| || | |  |_ _/ __| || |_   _|__/ __\ \ / /  \/  | _ )/ _ \| |
@@ -471,7 +477,16 @@
 ;; expand-region
 ;; 似乎已经内置了呀
 ;(require 'expand-region)
+(defun er/mark-line ()
+  "Marks this line."
+  (interactive)
+  (move-beginning-of-line 1)
+  (set-mark (point))
+  (move-end-of-line 1))
+
 (global-set-key (kbd "C-c m") 'er/expand-region)
+(global-set-key (kbd "C-c l") 'er/mark-line)
+(global-set-key (kbd "C-c w") 'er/mark-word)
 
 ;;  __  __ _   _ _  _____ ___ ___ _    ___     ___ _   _ ___  ___  ___  ___  ___
 ;; |  \/  | | | | ||_   _|_ _| _ \ |  | __|__ / __| | | | _ \/ __|/ _ \| _ \/ __|
