@@ -114,11 +114,11 @@
 
 ;; Change log:
 ;;
-;; 10/06/2007 - version 1.8.0 
+;; 10/06/2007 - version 1.8.0
 ;; 02/02/2007 - bug #1490021: Allow spaces in @param [in] documentation.
 ;;              bug #1496399: Allow for different ways of user-mail-address
 ;;              to be defined.
-;; 22/04/2006 - feature #1338245: Add tokens to filladapt to match 
+;; 22/04/2006 - feature #1338245: Add tokens to filladapt to match
 ;;              doxygen markup.
 ;;            - version 1.7.0
 ;; 04/06/2005 - version 1.6.0
@@ -1168,7 +1168,7 @@ the completion or nil if canceled by the user."
        (file-name-nondirectory (buffer-file-name))
      "") > n
 
-     " * 项目名称 : YVGA1207001A" > n
+     " * 项目名称 : YVBD1207001B" > n
      " * 模 块 名 : " p > n
      " * 功    能 : " p > n
      " * 操作系统 : LINUX" > n
@@ -1184,7 +1184,7 @@ the completion or nil if canceled by the user."
      " *- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" > n
      " * 公司介绍及版权说明" > n
      " *" > n
-     " *           (C)Copyright 2016 YView    Corporation All Rights Reserved." > n
+     " *           (C)Copyright 2018 YView    Corporation All Rights Reserved." > n
      " *- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" > n
      " ***************************************************************************************/" > n
      )
@@ -1206,7 +1206,7 @@ the completion or nil if canceled by the user."
 		(doxymacs-parm-tempo-element (cdr parms))))
 	 ;; felix modified at Sat 27 Aug 09:37:23 UTC 2016
 	 ((string= doxymacs-doxygen-style "C++")
-	  (list 'l " * " 
+	  (list 'l " * "
 		"输入参数 : " (car parms) ": " (list 'p prompt) '> 'n
 		(doxymacs-parm-tempo-element (cdr parms))))
 	 (t

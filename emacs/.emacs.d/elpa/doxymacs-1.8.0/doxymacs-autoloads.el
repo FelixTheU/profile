@@ -4,7 +4,7 @@
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
 ;;;### (autoloads nil "../../../profile/emacs/.emacs.d/elpa/doxymacs-1.8.0/doxymacs"
-;;;;;;  "doxymacs.el" "11dfbd255c9d4af8b8d8dcc97b095ee0")
+;;;;;;  "doxymacs.el" "e41c6f859ba5fa187259f599257727e8")
 ;;; Generated autoloads from doxymacs.el
 
 (or (assoc 'doxymacs-mode minor-mode-alist) (setq minor-mode-alist (cons '(doxymacs-mode " doxy") minor-mode-alist)))
@@ -54,10 +54,18 @@ Note that this only works if the opening tag starts at column 0.
 ;;;***
 
 ;;;### (autoloads nil "doxymacs" "../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs.el"
-;;;;;;  "11dfbd255c9d4af8b8d8dcc97b095ee0")
+;;;;;;  "e41c6f859ba5fa187259f599257727e8")
 ;;; Generated autoloads from ../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs.el
 
 (or (assoc 'doxymacs-mode minor-mode-alist) (setq minor-mode-alist (cons '(doxymacs-mode " doxy") minor-mode-alist)))
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs.el"
+;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/xml-parse.el"
+;;;;;;  "doxymacs.el" "xml-parse.el") (23202 34192 962180 668000))
 
 ;;;***
 
@@ -107,7 +115,9 @@ Note that this only works if the opening tag starts at column 0.
 ;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs-pkg.el"
 ;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/doxymacs.el"
 ;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/xml-parse.el"
-;;;;;;  "doxymacs.el" "xml-parse.el") (22854 42266 0 0))
+;;;;;;  "../../../../../.emacs.d/elpa/doxymacs-1.8.0/xml-parse.el"
+;;;;;;  "doxymacs.el" "xml-parse.el" "xml-parse.el") (23202 34334
+;;;;;;  956232 749000))
 
 ;;;***
 
