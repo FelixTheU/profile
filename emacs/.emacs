@@ -1,4 +1,4 @@
-;;; package --- Felix's .emacs
+p;;; package --- Felix's .emacs
 ;;; commentary:
 ;;; author: Felix Zheng.
 ;;; mail:ifelixzheng@163.com
@@ -18,6 +18,8 @@
 ;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c C-;), 调整 align 快捷键为 C-c C-l;
 ;;;                               添加一众 er/mark-xxx 快捷键；
 ;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
+;;; record_10 00:16 2018/03/23 -> 添加 yasnippet ya-insert-snippet 快捷键为 C-c C-y, 当有 region 使用 ya-insert-snippet 时
+;;;                               默认将 region 使用 $0 内容保留.
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -413,7 +415,7 @@
 ;; 高亮指定列
 (require 'column-marker)
 ;; C-u 前缀可以取消列高亮
-(global-set-key (kbd "C-c C-y") 'column-marker-1)
+(global-set-key (kbd "C-c C-o") 'column-marker-1)
 
 ;; __  ____  ____  ____  ____  ____  ____  ____  __  _____ _  __   __ __  ____  ____  ____  ____  ____  ____  ____  __
 ;; \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ / |  ___| | \ \ / / \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /
@@ -476,7 +478,7 @@
 
 ;; expand-region
 ;; 似乎已经内置了呀
-;(require 'expand-region)
+(require 'expand-region)
 (defun er/mark-line ()
   "Marks this line."
   (interactive)
@@ -591,8 +593,12 @@
 
 ;; yasnippet 模板系统
 (require 'yasnippet)
-;;; 启动后自动启用补全
+;; 启动后自动启用补全
 (add-hook 'after-init-hook 'yas-global-mode)
+(global-set-key (kbd "C-c C-y") 'yas-insert-snippet)
+;; 在有region 时将其内容替换到 $0 占位符处
+(setq yas-wrap-around-region t)
+
 
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
