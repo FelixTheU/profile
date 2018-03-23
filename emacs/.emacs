@@ -36,6 +36,7 @@
  '(c-default-style
    (quote
     ((c-mode . "linux")
+     (c++-mode . "linux")
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "gnu"))))
