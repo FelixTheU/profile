@@ -18,6 +18,7 @@
 ;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c |), 调整 align 快捷键为 C-c \;
 ;;;                               添加一众 er/mark-xxx 快捷键；
 ;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
+;;;                               使用 highlight-symbol 提供的 C-x w . 手动高亮当前 symbol 更好的哟
 ;;; record_10 00:16 2018/03/23 -> 添加 yasnippet ya-insert-snippet 快捷键为 C-c C-y, 当有 region 使用 ya-insert-snippet 时
 ;;;                               默认将 region 使用 $0 内容保留.
 ;;; code:
@@ -377,6 +378,7 @@
 ;;  | || |) | |__| _|___| __ || | (_ | __ | |__ | | (_ | __ | | |
 ;; |___|___/|____|___|  |_||_|___\___|_||_|____|___\___|_||_| |_|
 
+
 ;; idle-highlight 高亮当前选中符号 自动对所有语言开启
 ;; 由于高亮使用了和“mark”一样的颜色，有时会有干扰，在无法修改其颜色之前，屏蔽 -- 23:03 2018/03/21
 ;; (require 'idle-highlight)
@@ -388,7 +390,8 @@
 ;; |_||_|___\___|_||_|____|___\___|_||_| |_|    |___/ |_| |_|  |_|___/\___/|____|
 
 ;; 符号语法高亮
-;; (require 'highlight-symbol)
+;; 欢迎使用 highlight-symbol 提供的 C-x w . 高亮当前 symbol，表示手动更好使
+(require 'highlight-symbol)
 ;; (global-set-key [(control f3)] 'highlight-symbol)
 ;; (global-set-key [f3] 'highlight-symbol-next)
 ;; (global-set-key [(shift f3)] 'highlight-symbol-prev)
