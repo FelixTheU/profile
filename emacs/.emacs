@@ -15,7 +15,7 @@
 ;;; record_06 12:50 2017/09/10 -> 添加 slime，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
 ;;; record_07 13:15 2018/01/29 -> 配置 windows 版本下的 tramp 默认使用 plink 进行远程连接
 ;;; record_08 23:44 2018/01/30 -> 添加 gtags, magit, 以及配置 python-mode 下缩进为4个空格
-;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c C-;), 调整 align 快捷键为 C-c C-l;
+;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c |), 调整 align 快捷键为 C-c \;
 ;;;                               添加一众 er/mark-xxx 快捷键；
 ;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
 ;;; record_10 00:16 2018/03/23 -> 添加 yasnippet ya-insert-snippet 快捷键为 C-c C-y, 当有 region 使用 ya-insert-snippet 时
@@ -216,8 +216,8 @@
 (global-set-key (kbd "C-c k") 'ff-find-other-file)
 
 ;; 对齐
-(global-set-key (kbd "C-c C-l") 'align)
-(global-set-key (kbd "C-c C-;") 'align-regexp)
+(global-set-key (kbd "C-c \\") 'align)
+(global-set-key (kbd "C-c |") 'align-regexp)
 
 
 ;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
