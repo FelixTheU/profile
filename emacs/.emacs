@@ -1,4 +1,4 @@
-p;;; package --- Felix's .emacs
+;;; package --- Felix's .emacs
 ;;; commentary:
 ;;; author: Felix Zheng.
 ;;; mail:ifelixzheng@163.com
