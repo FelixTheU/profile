@@ -18,6 +18,9 @@
 ;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c C-;), 调整 align 快捷键为 C-c C-l;
 ;;;                               添加一众 er/mark-xxx 快捷键；
 ;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
+;;; record_10 17:30 2018/05/09 -> 调整 align 快捷键为 C-c \, align-regexp 为 C-c |;
+;;;                               打开 (require 'expand-region)，虽然内置了，还是需要加载;
+;;;                               设置 C++ 默认编码风格为 linux style;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -34,6 +37,7 @@
  '(c-default-style
    (quote
     ((c-mode . "linux")
+     (c++-mode . "linux")
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "gnu"))))
@@ -213,8 +217,8 @@
 (global-set-key (kbd "C-c k") 'ff-find-other-file)
 
 ;; 对齐
-(global-set-key (kbd "C-c C-l") 'align)
-(global-set-key (kbd "C-c C-;") 'align-regexp)
+(global-set-key (kbd "C-c \\") 'align)
+(global-set-key (kbd "C-c |") 'align-regexp)
 
 
 ;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
@@ -476,7 +480,7 @@
 
 ;; expand-region
 ;; 似乎已经内置了呀
-;(require 'expand-region)
+(require 'expand-region)
 (defun er/mark-line ()
   "Marks this line."
   (interactive)
