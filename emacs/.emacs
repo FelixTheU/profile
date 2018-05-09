@@ -15,12 +15,15 @@
 ;;; record_06 12:50 2017/09/10 -> 添加 slime，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
 ;;; record_07 13:15 2018/01/29 -> 配置 windows 版本下的 tramp 默认使用 plink 进行远程连接
 ;;; record_08 23:44 2018/01/30 -> 添加 gtags, magit, 以及配置 python-mode 下缩进为4个空格
-;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c C-;), 调整 align 快捷键为 C-c C-l;
+;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c |), 调整 align 快捷键为 C-c \;
 ;;;                               添加一众 er/mark-xxx 快捷键；
 ;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
-;;; record_10 17:30 2018/05/09 -> 调整 align 快捷键为 C-c \, align-regexp 为 C-c |;
+;;; record_10 00:16 2018/03/23 -> 添加 yasnippet ya-insert-snippet 快捷键为 C-c C-y, 当有 region 使用 ya-insert-snippet 时
+;;;                               默认将 region 使用 $0 内容保留.
+;;; record_11 17:30 2018/05/09 -> 调整 align 快捷键为 C-c \, align-regexp 为 C-c |;
 ;;;                               打开 (require 'expand-region)，虽然内置了，还是需要加载;
 ;;;                               设置 C++ 默认编码风格为 linux style;
+;;;                               使用 highlight-symbol 提供的 C-x w . 手动高亮当前 symbol 更好的哟
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -378,6 +381,7 @@
 ;;  | || |) | |__| _|___| __ || | (_ | __ | |__ | | (_ | __ | | |
 ;; |___|___/|____|___|  |_||_|___\___|_||_|____|___\___|_||_| |_|
 
+
 ;; idle-highlight 高亮当前选中符号 自动对所有语言开启
 ;; 由于高亮使用了和“mark”一样的颜色，有时会有干扰，在无法修改其颜色之前，屏蔽 -- 23:03 2018/03/21
 ;; (require 'idle-highlight)
@@ -389,7 +393,8 @@
 ;; |_||_|___\___|_||_|____|___\___|_||_| |_|    |___/ |_| |_|  |_|___/\___/|____|
 
 ;; 符号语法高亮
-;; (require 'highlight-symbol)
+;; 欢迎使用 highlight-symbol 提供的 C-x w . 高亮当前 symbol，表示手动更好使
+(require 'highlight-symbol)
 ;; (global-set-key [(control f3)] 'highlight-symbol)
 ;; (global-set-key [f3] 'highlight-symbol-next)
 ;; (global-set-key [(shift f3)] 'highlight-symbol-prev)
@@ -417,7 +422,7 @@
 ;; 高亮指定列
 (require 'column-marker)
 ;; C-u 前缀可以取消列高亮
-(global-set-key (kbd "C-c C-y") 'column-marker-1)
+(global-set-key (kbd "C-c C-o") 'column-marker-1)
 
 ;; __  ____  ____  ____  ____  ____  ____  ____  __  _____ _  __   __ __  ____  ____  ____  ____  ____  ____  ____  __
 ;; \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ / |  ___| | \ \ / / \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /
@@ -595,8 +600,12 @@
 
 ;; yasnippet 模板系统
 (require 'yasnippet)
-;;; 启动后自动启用补全
+;; 启动后自动启用补全
 (add-hook 'after-init-hook 'yas-global-mode)
+(global-set-key (kbd "C-c C-y") 'yas-insert-snippet)
+;; 在有region 时将其内容替换到 $0 占位符处
+(setq yas-wrap-around-region t)
+
 
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
