@@ -24,6 +24,10 @@
 ;;;                               打开 (require 'expand-region)，虽然内置了，还是需要加载;
 ;;;                               设置 C++ 默认编码风格为 linux style;
 ;;;                               使用 highlight-symbol 提供的 C-x w . 手动高亮当前 symbol 更好的哟
+;;; record_12 11:13 2018/07/14 -> highlight-symbol-at-point 快捷键调整为 C-c w
+;;;                               er/mark-word   快捷键设置为 C-c [
+;;;                               er/mark-symbol 快捷键设置为 C-c ]
+;;;                               projectile-compile-project 快捷键设置为 F7
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -396,7 +400,7 @@
 ;; 欢迎使用 highlight-symbol 提供的 C-x w . 高亮当前 symbol，表示手动更好使
 (require 'highlight-symbol)
 ;; (global-set-key [(control f3)] 'highlight-symbol)
-;; (global-set-key [f3] 'highlight-symbol-next)
+(global-set-key (kbd "C-c w") 'highlight-symbol-at-point)
 ;; (global-set-key [(shift f3)] 'highlight-symbol-prev)
 ;; (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
 ;; (add-hook 'c-mode-common-hook 'highlight-symbol-mode)
@@ -495,7 +499,8 @@
 
 (global-set-key (kbd "C-c m") 'er/expand-region)
 (global-set-key (kbd "C-c l") 'er/mark-line)
-(global-set-key (kbd "C-c w") 'er/mark-word)
+(global-set-key (kbd "C-c [") 'er/mark-word)
+(global-set-key (kbd "C-c ]") 'er/mark-symbol)
 
 ;;  __  __ _   _ _  _____ ___ ___ _    ___     ___ _   _ ___  ___  ___  ___  ___
 ;; |  \/  | | | | ||_   _|_ _| _ \ |  | __|__ / __| | | | _ \/ __|/ _ \| _ \/ __|
@@ -555,6 +560,7 @@
 ;; projectile
 (setq projectile-enable-caching t)
 (global-set-key [f5] 'projectile-find-file)
+(global-set-key [f7] 'projectile-compile-project)
 (add-hook 'c-mode-common-hook
           'projectile-mode)
 ;; (projectile-global-mode)
