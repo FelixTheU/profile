@@ -28,6 +28,8 @@
 ;;;                               er/mark-word   快捷键设置为 C-c [
 ;;;                               er/mark-symbol 快捷键设置为 C-c ]
 ;;;                               projectile-compile-project 快捷键设置为 F7
+;;; record_13 18:59 2018/07/21 -> 将 win/.emacs 中对 windows 的特别处理代码(主要为解决 emacs25 卡顿问题)合并到本文件
+;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -59,10 +61,10 @@
  '(package-selected-packages
    (quote
     (ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+ '(password-cache-expiry nil)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil))
-
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -75,6 +77,15 @@
 ;; | __|  \/  | /_\ / __/ __| | _ ) /_\ / __|_ _/ __|
 ;; | _|| |\/| |/ _ \ (__\__ \ | _ \/ _ \\__ \| | (__
 ;; |___|_|  |_/_/ \_\___|___/ |___/_/ \_\___/___\___|
+
+
+;; 设置垃圾回收，在Windows下，emacs25 版本会频繁出发垃圾回收，造成卡顿
+(when (eq system-type 'windows-nt)
+  (setq gc-cons-threshold (* 512 1024 1024))
+  (setq gc-cons-percentage 0.5)
+  (run-with-idle-timer 5 t #'garbage-collect)
+  ;; (setq garbage-collection-messages t)           ;; 显示垃圾回收信息，这个可以作为调试用
+)
 
 ;; 总是启动 server 模式，应对每次 emacs 启动缓慢问题                10:52 2016/12/15
  (server-start)
@@ -343,7 +354,7 @@
        (font-spec :name "-WenQ-文泉驿等宽正黑-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
                   :weight 'normal
                   :slant 'normal
-                  :size 13.5))))        ;; ever 14
+                  :size 13.0))))        ;; ever 14
 
 ;;  _  _ ___ ___ _  _ _    ___ ___ _  _ _____    ___  _   ___ ___ _  _ _____ _  _
 ;; | || |_ _/ __| || | |  |_ _/ __| || |_   _|__| _ \/_\ | _ \ __| \| |_   _| || |
@@ -672,7 +683,6 @@
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
-
 
 ;;  _____   _______ _  _  ___  _  _
 ;; | _ \ \ / /_   _| || |/ _ \| \| |
