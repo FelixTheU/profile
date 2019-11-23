@@ -1,0 +1,15 @@
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/emacs --fg-daemon --user %u
+ExecStop=/usr/local/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+User=%u
+WorkingDirectory=%h
+
+[Install]
+WantedBy=multi-user.target
