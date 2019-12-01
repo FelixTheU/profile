@@ -30,6 +30,8 @@
 ;;;                               projectile-compile-project 快捷键设置为 F7
 ;;; record_13 18:59 2018/07/21 -> 将 win/.emacs 中对 windows 的特别处理代码(主要为解决 emacs25 卡顿问题)合并到本文件
 ;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
+;;; record_14 14:54 2019/11/24 -> 添加 "TAB and SPACE" 一节，高亮显示 buffer 中的 tab 与 trailing space;
+;;;                               在 buffer 保存时自动进行 a) 移除 trailing space, b) 将 tab 转换为 空格;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -63,7 +65,7 @@
     (ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
  '(show-paren-mode t)
- '(tab-width 4)
+ '(tab-width 4)                         ; 将 tab 设置为4 个空格
  '(tool-bar-mode nil))
 
 (custom-set-faces
@@ -107,9 +109,6 @@
 ;; 将备份文件保存到指定目录
 (setq backup-directory-alist (quote (("." . "~/.backups"))))
 
-;; 保存时删除行尾的空白                                             09:07 2017/09/10
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
 ;; 高亮当前行(上下移动时明显拖慢，放弃）                            13:12 2016/12/15
 ;(global-hl-line-mode 1)
 
@@ -129,6 +128,39 @@
 ;; (setq show-paren-delay 0
 ;;       show-paren-style 'parenthesis)
 ;; (show-paren-mode 1)
+
+;;  _____ _   ___                _   ___ ___  _   ___ ___
+;; |_   _/_\ | _ )  __ _ _ _  __| | / __| _ \/_\ / __| __|
+;;   | |/ _ \| _ \ / _` | ' \/ _` | \__ \  _/ _ \ (__| _|
+;;   |_/_/ \_\___/ \__,_|_||_\__,_| |___/_|/_/ \_\___|___|
+;; 14:37 2019/11/24
+;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
+(add-hook 'prog-mode-hook
+          '(lambda()
+             (setq-default indent-tabs-mode nil)
+             ))
+
+;; 保存时删除行尾的空白                                             09:07 2017/09/10
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; 保存时将 tab 调整为 空格
+;; ref: https://www.emacswiki.org/emacs/UntabifyUponSave
+(defvar untabify-this-buffer)
+(defun untabify-all ()
+  "Untabify the current buffer, unless `untabify-this-buffer' is nil."
+  (and untabify-this-buffer (untabify (point-min) (point-max))))
+(define-minor-mode untabify-mode
+  "Untabify buffer on save." nil " untab" nil
+  (make-variable-buffer-local 'untabify-this-buffer)
+  (setq untabify-this-buffer (not (derived-mode-p 'makefile-mode)))
+  (add-hook 'before-save-hook #'untabify-all))
+ (add-hook 'prog-mode-hook 'untabify-mode)
+
+;; Highlight tabs and trailing whitespace everywhere
+;; ref: https://gist.github.com/kzar/7397117c70b3a9bbf212
+(setq whitespace-style '(face trailing tabs))
+(custom-set-faces '(whitespace-tab ((t (:background "red")))))
+(global-whitespace-mode)
 
 ;;  _____ ___    _   __  __ ___
 ;; |_   _| _ \  /_\ |  \/  | _ \
@@ -237,13 +269,6 @@
 ;; 对齐
 (global-set-key (kbd "C-c \\") 'align)
 (global-set-key (kbd "C-c |") 'align-regexp)
-
-
-;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
-(add-hook 'prog-mode-hook
-          '(lambda()
-             (setq-default indent-tabs-mode nil)
-             ))
 
 ;; 注释，在没有 region 的时候注释当前行
 (defun my-comment-or-uncomment-region (beg end &optional arg)
