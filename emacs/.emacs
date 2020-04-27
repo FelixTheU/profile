@@ -64,6 +64,9 @@
    (quote
     (cmake-mode cmake-project multi-term ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
+ '(server-auth-key
+   "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
+ '(server-use-tcp t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil))
@@ -90,6 +93,13 @@
 )
 
 ;; 总是启动 server 模式，应对每次 emacs 启动缓慢问题                10:52 2016/12/15
+ ;(setq server-auth-dir "~/server";)
+ ;(setq server-name "emacs_server")
+(defadvice server-ensure-safe-dir (around
+				    my-around-server-ensure-safe-dir
+				    activate)
+	   "Ignores any errors raised from server-ensure-safe-dir"
+	   (ignore-errors ad-do-it))
  (server-start)
 
 ;; disable welcome page
@@ -694,4 +704,8 @@
 (add-hook 'python-mode-hook
           (lambda () (setq tab-width 4)))
 
+;;
+;; downcase-region
+;;
+(put 'downcase-region 'disabled nil)
 ;;; .emacs ends here
