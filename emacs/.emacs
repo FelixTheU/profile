@@ -30,6 +30,8 @@
 ;;;                               projectile-compile-project 快捷键设置为 F7
 ;;; record_13 18:59 2018/07/21 -> 将 win/.emacs 中对 windows 的特别处理代码(主要为解决 emacs25 卡顿问题)合并到本文件
 ;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
+;;; record_14 13:13 2020/04/27 -> 添加 cmake-mode 与 cmake-project 方便 cmake 项目配置;
+;;;                               添加 multi-term 增强 term;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -60,7 +62,7 @@
  '(flycheck-keymap-prefix "c")
  '(package-selected-packages
    (quote
-    (ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+    (cmake-mode cmake-project multi-term ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
  '(show-paren-mode t)
  '(tab-width 4)
