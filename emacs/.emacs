@@ -32,6 +32,10 @@
 ;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
 ;;; record_14 14:54 2019/11/24 -> 添加 "TAB and SPACE" 一节，高亮显示 buffer 中的 tab 与 trailing space;
 ;;;                               在 buffer 保存时自动进行 a) 移除 trailing space, b) 将 tab 转换为 空格;
+;;; record_15 20:50 2020/05/24 -> 添加 cmake-mode 与 flycheck-clangcheck:
+;;;                               cmake-mode 用于编辑 CMakeLists.txt 文件，补全比较方便；
+;;;                               flycheck-clangcheck 使用 clang-check 进行静态代码分析，可读入 compile_commands.json 文件配置编译参数;
+;;;                               添加"c/c++ offset settings." 一节，对于 class 中的 inline member function 不进行缩进;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -62,11 +66,17 @@
  '(flycheck-keymap-prefix "c")
  '(package-selected-packages
    (quote
-    (ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+    (flycheck-clangcheck cmake-mode ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
  '(show-paren-mode t)
  '(tab-width 4)                         ; 将 tab 设置为4 个空格
  '(tool-bar-mode nil))
+
+;; c/c++ offset settings.
+;; -- 20:43 2020/05/24
+(c-set-offset 'inline-open '0)
+(c-set-offset 'innamespace '0)
+(c-set-offset 'inextern-lang '0)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -631,9 +641,25 @@
 ;; |_| |____|_| \___|_||_|___\___|_|\_\
 
 ;; flycheck 实时语法检查
+;; 需要搭配 clang 使用效果方好
+;; update comment at 20:47 2020/05/24
 (require 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 ;;; (add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; flycheck clangchecker, 支持根据cmake 等生成的 compile_commands.json
+;; 自动配置编译检查相关参数.
+;; -- 20:41 2020/05/24
+(require 'flycheck-clangcheck)
+(defun my-select-clangcheck-for-checker ()
+  "Select clang-check for flycheck's checker."
+  ;; (flycheck-set-checker-executable 'c/c++-clangcheck
+  ;;                                  "/path/to/clang-check")
+  (flycheck-select-checker 'c/c++-clangcheck))
+(add-hook 'c-mode-hook #'my-select-clangcheck-for-checker)
+(add-hook 'c++-mode-hook #'my-select-clangcheck-for-checker)
+;; enable static analysis
+(setq flycheck-clangcheck-analyze t)
 
 ;; __   ___   ___ _  _ ___ ___ ___ ___ _____
 ;; \ \ / /_\ / __| \| |_ _| _ \ _ \ __|_   _|
@@ -655,6 +681,8 @@
 ;;  \___\___/|_|  |_|_|/_/ \_\_|\_| |_|
 
 ;; company 补全配置
+;; c/c++ mode 下搭配 clang 可发挥较好的补全效果
+;; update comment at 20:46 2020/05/24
 (add-hook 'prog-mode-hook 'company-mode)
 (setq company-idle-delay 0)    ; 无延迟，总是自动进行补全
 ;; 绑定补全快捷键
