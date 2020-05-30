@@ -36,6 +36,9 @@
 ;;;                               cmake-mode 用于编辑 CMakeLists.txt 文件，补全比较方便；
 ;;;                               flycheck-clangcheck 使用 clang-check 进行静态代码分析，可读入 compile_commands.json 文件配置编译参数;
 ;;;                               添加"c/c++ offset settings." 一节，对于 class 中的 inline member function 不进行缩进;
+;;; record_16 15:24 2020/05/30 -> 1. [aha] 移除 flycheck-clangcheck, 发现了更好用的 cmake-ide 自动为 company, flycheck(clang) 设置相应 flags;
+;;;                                  无需额外配置，补全与静态代码检查就能很好地工作;
+;;;                               2. 将 "TAB and SPACE" 一节调整位置，与 "custom-set-face 将 whitespace 与 tab 设置颜色"放到一起;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -66,10 +69,10 @@
  '(flycheck-keymap-prefix "c")
  '(package-selected-packages
    (quote
-    (flycheck-clangcheck cmake-mode ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+    (cmake-ide cmake-mode ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
  '(show-paren-mode t)
- '(tab-width 4)                         ; 将 tab 设置为4 个空格
+ '(tab-width 4)
  '(tool-bar-mode nil))
 
 ;; c/c++ offset settings.
@@ -83,7 +86,39 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(whitespace-tab ((t (:background "red")))))
+
+;;  _____ _   ___                _   ___ ___  _   ___ ___
+;; |_   _/_\ | _ )  __ _ _ _  __| | / __| _ \/_\ / __| __|
+;;   | |/ _ \| _ \ / _` | ' \/ _` | \__ \  _/ _ \ (__| _|
+;;   |_/_/ \_\___/ \__,_|_||_\__,_| |___/_|/_/ \_\___|___|
+;; 14:37 2019/11/24
+;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
+(add-hook 'prog-mode-hook
+          '(lambda()
+             (setq-default indent-tabs-mode nil)
+             ))
+
+;; 保存时删除行尾的空白                                             09:07 2017/09/10
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; 保存时将 tab 调整为 空格
+;; ref: https://www.emacswiki.org/emacs/UntabifyUponSave
+(defvar untabify-this-buffer)
+(defun untabify-all ()
+  "Untabify the current buffer, unless `untabify-this-buffer' is nil."
+  (and untabify-this-buffer (untabify (point-min) (point-max))))
+(define-minor-mode untabify-mode
+  "Untabify buffer on save." nil " untab" nil
+  (make-variable-buffer-local 'untabify-this-buffer)
+  (setq untabify-this-buffer (not (derived-mode-p 'makefile-mode)))
+  (add-hook 'before-save-hook #'untabify-all))
+ (add-hook 'prog-mode-hook 'untabify-mode)
+
+;; Highlight tabs and trailing whitespace everywhere
+;; ref: https://gist.github.com/kzar/7397117c70b3a9bbf212
+(setq whitespace-style '(face trailing tabs))
+(global-whitespace-mode)
 
 ;;  ___ __  __   _   ___ ___   ___   _   ___ ___ ___
 ;; | __|  \/  | /_\ / __/ __| | _ ) /_\ / __|_ _/ __|
@@ -139,38 +174,6 @@
 ;;       show-paren-style 'parenthesis)
 ;; (show-paren-mode 1)
 
-;;  _____ _   ___                _   ___ ___  _   ___ ___
-;; |_   _/_\ | _ )  __ _ _ _  __| | / __| _ \/_\ / __| __|
-;;   | |/ _ \| _ \ / _` | ' \/ _` | \__ \  _/ _ \ (__| _|
-;;   |_/_/ \_\___/ \__,_|_||_\__,_| |___/_|/_/ \_\___|___|
-;; 14:37 2019/11/24
-;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
-(add-hook 'prog-mode-hook
-          '(lambda()
-             (setq-default indent-tabs-mode nil)
-             ))
-
-;; 保存时删除行尾的空白                                             09:07 2017/09/10
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; 保存时将 tab 调整为 空格
-;; ref: https://www.emacswiki.org/emacs/UntabifyUponSave
-(defvar untabify-this-buffer)
-(defun untabify-all ()
-  "Untabify the current buffer, unless `untabify-this-buffer' is nil."
-  (and untabify-this-buffer (untabify (point-min) (point-max))))
-(define-minor-mode untabify-mode
-  "Untabify buffer on save." nil " untab" nil
-  (make-variable-buffer-local 'untabify-this-buffer)
-  (setq untabify-this-buffer (not (derived-mode-p 'makefile-mode)))
-  (add-hook 'before-save-hook #'untabify-all))
- (add-hook 'prog-mode-hook 'untabify-mode)
-
-;; Highlight tabs and trailing whitespace everywhere
-;; ref: https://gist.github.com/kzar/7397117c70b3a9bbf212
-(setq whitespace-style '(face trailing tabs))
-(custom-set-faces '(whitespace-tab ((t (:background "red")))))
-(global-whitespace-mode)
 
 ;;  _____ ___    _   __  __ ___
 ;; |_   _| _ \  /_\ |  \/  | _ \
@@ -647,19 +650,12 @@
 (add-hook 'prog-mode-hook 'flycheck-mode)
 ;;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; flycheck clangchecker, 支持根据cmake 等生成的 compile_commands.json
-;; 自动配置编译检查相关参数.
-;; -- 20:41 2020/05/24
-(require 'flycheck-clangcheck)
-(defun my-select-clangcheck-for-checker ()
-  "Select clang-check for flycheck's checker."
-  ;; (flycheck-set-checker-executable 'c/c++-clangcheck
-  ;;                                  "/path/to/clang-check")
-  (flycheck-select-checker 'c/c++-clangcheck))
-(add-hook 'c-mode-hook #'my-select-clangcheck-for-checker)
-(add-hook 'c++-mode-hook #'my-select-clangcheck-for-checker)
-;; enable static analysis
-(setq flycheck-clangcheck-analyze t)
+;;
+;; cmake-ide
+;; 自动设置 company, flycheck 等插件需要的 flags,十分贴心.
+;; 15:20 2020/05/30
+;;
+(cmake-ide-setup)
 
 ;; __   ___   ___ _  _ ___ ___ ___ ___ _____
 ;; \ \ / /_\ / __| \| |_ _| _ \ _ \ __|_   _|
