@@ -530,6 +530,7 @@
 ;; helm (ELPA 安装) 管理文件与buffer（与ido 类型）
 (require 'helm-config)
 (global-set-key (kbd "M-X") 'helm-M-x)
+(helm-mode 1)
 
 ;;  _____  _____  _   _  _ ___      ___ ___ ___ ___ ___  _  _
 ;; | __\ \/ / _ \/_\ | \| |   \ ___| _ \ __/ __|_ _/ _ \| \| |
