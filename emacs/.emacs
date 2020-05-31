@@ -32,7 +32,7 @@
 ;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
 ;;; record_14 14:54 2019/11/24 -> 添加 "TAB and SPACE" 一节，高亮显示 buffer 中的 tab 与 trailing space;
 ;;;                               在 buffer 保存时自动进行 a) 移除 trailing space, b) 将 tab 转换为 空格;
-;;; record_15 20:50 2020/05/24 -> 添加 cmake-mode 与 flycheck-clangcheck:
+;;; record_15 20:50 2020/05/24 -> 添加 cmake-mode 与 flycheck-clangcheck, multi-term:
 ;;;                               cmake-mode 用于编辑 CMakeLists.txt 文件，补全比较方便；
 ;;;                               flycheck-clangcheck 使用 clang-check 进行静态代码分析，可读入 compile_commands.json 文件配置编译参数;
 ;;;                               添加"c/c++ offset settings." 一节，对于 class 中的 inline member function 不进行缩进;
@@ -70,8 +70,11 @@
  '(org-babel-load-languages (quote ((shell . t) (emacs-lisp . t))))
  '(package-selected-packages
    (quote
-    (cmake-ide cmake-mode ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+    (cmake-ide cmake-mode multi-term ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
  '(password-cache-expiry nil)
+ '(server-auth-key
+   "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
+ '(server-use-tcp t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil))
@@ -136,6 +139,13 @@
 )
 
 ;; 总是启动 server 模式，应对每次 emacs 启动缓慢问题                10:52 2016/12/15
+ ;(setq server-auth-dir "~/server";)
+ ;(setq server-name "emacs_server")
+(defadvice server-ensure-safe-dir (around
+				    my-around-server-ensure-safe-dir
+				    activate)
+	   "Ignores any errors raised from server-ensure-safe-dir"
+	   (ignore-errors ad-do-it))
  (server-start)
 
 ;; disable welcome page
@@ -743,4 +753,8 @@
 (add-hook 'python-mode-hook
           (lambda () (setq tab-width 4)))
 
+;;
+;; downcase-region
+;;
+(put 'downcase-region 'disabled nil)
 ;;; .emacs ends here
