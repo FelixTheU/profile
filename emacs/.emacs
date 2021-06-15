@@ -41,6 +41,7 @@
 ;;;                               2. 将 "TAB and SPACE" 一节调整位置，与 "custom-set-face 将 whitespace 与 tab 设置颜色"放到一起;
 ;;; record_17 23:17 2021/06/15 -> 1. 配置 f7 为 cmake-ide-compile 命令;
 ;;;                               2. 仅在 prog-mode 下才开启 display-line-number-mode;
+;;; record_18 23:36 2021/06/15 -> 增加 bison-mode 支持 flex 与 bison 文件的编辑;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -684,7 +685,6 @@
 ;; 在有region 时将其内容替换到 $0 占位符处
 (setq yas-wrap-around-region t)
 
-
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
 ;; | (_| (_) | |\/| |  _/ _ \| .` |\ V /
@@ -759,4 +759,11 @@
 ;; downcase-region
 ;;
 (put 'downcase-region 'disabled nil)
+
+;;  ___ ___ ___  ___  _  _     __  __  ___  ___  ___
+;; | _ )_ _/ __|/ _ \| \| |___|  \/  |/ _ \|   \| __|
+;; | _ \| |\__ \ (_) | .` |___| |\/| | (_) | |) | _|
+;; |___/___|___/\___/|_|\_|   |_|  |_|\___/|___/|___|
+;; 23:35 2021/06/15
+(require 'bison-mode)
 ;;; .emacs ends here
