@@ -39,6 +39,8 @@
 ;;; record_16 15:24 2020/05/30 -> 1. [aha] 移除 flycheck-clangcheck, 发现了更好用的 cmake-ide 自动为 company, flycheck(clang) 设置相应 flags;
 ;;;                                  无需额外配置，补全与静态代码检查就能很好地工作;
 ;;;                               2. 将 "TAB and SPACE" 一节调整位置，与 "custom-set-face 将 whitespace 与 tab 设置颜色"放到一起;
+;;; record_17 23:17 2021/06/15 -> 1. 配置 f7 为 cmake-ide-compile 命令;
+;;;                               2. 仅在 prog-mode 下才开启 display-line-number-mode;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -142,10 +144,10 @@
  ;(setq server-auth-dir "~/server";)
  ;(setq server-name "emacs_server")
 (defadvice server-ensure-safe-dir (around
-				    my-around-server-ensure-safe-dir
-				    activate)
-	   "Ignores any errors raised from server-ensure-safe-dir"
-	   (ignore-errors ad-do-it))
+                    my-around-server-ensure-safe-dir
+                    activate)
+       "Ignores any errors raised from server-ensure-safe-dir"
+       (ignore-errors ad-do-it))
  (server-start)
 
 ;; disable welcome page
@@ -155,8 +157,8 @@
 ;; 设置窗口默认大小                                                 15:48 2013/03/06
 (setq default-frame-alist '((height . 30) (width . 150)))
 
-;; 总是显示行号, 列号                                               20:26 2014/10/18
-(global-linum-mode 1)
+;; 在 prog-mode 下才显示行号                                        23:13 2021/06/15
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (column-number-mode)
 
 ;;; Always do syntax highlighting 打开高亮
@@ -266,7 +268,7 @@
 ;;  \___\___/|___/___|_|\_|\___|
 
 ;; 编译快捷键
-(global-set-key [(f7)] 'compile)
+(global-set-key [(f7)] 'cmake-ide-compile)
 
 ;; 块注释快捷键                                                     16:05 2013/03/06
 (global-set-key (kbd "C-c C-r") 'comment-region)
