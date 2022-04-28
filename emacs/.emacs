@@ -42,6 +42,14 @@
 ;;; record_17 23:17 2021/06/15 -> 1. 配置 f7 为 cmake-ide-compile 命令;
 ;;;                               2. 仅在 prog-mode 下才开启 display-line-number-mode;
 ;;; record_18 23:36 2021/06/15 -> 增加 bison-mode 支持 flex 与 bison 文件的编辑;
+;;; record_19 12:58 2022/04/28 -> 1. package: 修改 elpa 源，melpa 源已经调整为 https 协议;
+;;;                               2. package: 在 package-list 中进行 update 操作升级过旧的 packages(通过 'u' 命令), 否则 lsp-mode 无法正常使用;
+;;;                               3. package: 移除 bison-mode(Emacs 已经内置);
+;;;                               4. package: 移除 cscope、gtags, 使用 lsp-mode 作为替代; 移除 highlight-symbol, lsp-mode 中的高亮效果较好;
+;;;                               4. package: 移除 zenburn 主题，使用 spacemacs-theme 替换, zenburn 在配合 lsp-mode 下进行符号高亮上没有效果;
+;;;                               5. package: 移除 slime package 与 配置, 不写 Lisp 好多年了; 移除 exec-from-shell, 似乎只在 mac 下需要;
+;;;                               7. package: 移除 server-start 配置，当 Emacs 以 client 连接到同一个 Emacs server 如果当前有多个 project 则 .dir-locals 会干扰;
+;;;                               9. 快捷键：将 F7 快捷键配置为 cmake-ide-compile; 调整 helm 中 TAB 键作为补全，之前默认进行 action 太难用了;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -56,24 +64,21 @@
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
  '(c-default-style
-   (quote
-    ((c-mode . "linux")
+   '((c-mode . "linux")
      (c++-mode . "linux")
      (java-mode . "java")
      (awk-mode . "awk")
-     (other . "gnu"))))
+     (other . "gnu")))
  '(cfs--current-profile "profile1" t)
- '(cfs--profiles-steps (quote (("profile1" . 4))) t)
- '(custom-enabled-themes (quote (zenburn)))
+ '(cfs--profiles-steps '(("profile1" . 4)) t)
+ '(custom-enabled-themes '(spacemacs-dark))
  '(custom-safe-themes
-   (quote
-    ("a8ed07d9e93f48b8ce5a2b5a0c734e8d0c851fd06b6f41e1e5d5ef95f04f844e" "dcf80f91cba25952b0848b8ff224b29c7dcc316d21a82c9cf249372cc167efef" "492f5ab818fa899269c6c1d1781646ed78c8e1100221a1a6ca3ba3f9c1e072fe" "cc152af53bde6f2ea12bf06a5ced8388370d3ae1557d27dc42e94cb89cf1073d" "4ef40cda673cf1a547c0203c9c7af5c32445975974f16edf8390ce99b552117f" "4fc466d75fc9bafea57c90159e49b6e30f1546f4aa41ee9af1f1cb66733aec9c" "8348a530d33d5bb34f8d8ef5ccbb7a82aff07cedf837d8ae04ea43de4858028f" "7f0b7f9ab6474d82b6e88d38c0891c9f69b7b6944df0da6ba908eb707cd1a4e1" "526a499cb6c3611b9021ff02facd7313f22fa16800a970b052ddc64316789829" "7cd6ab2797758c4909e924148ef0d27882f2ed37b263cb3e427ecea438fbe2bc" "0579868cfe1ae8b3c7538402f649733397047bc2be89623d14b9d257ba985bbc" "3a22fb5164fdaed60123fb5d5346455b96f8ec83e8f18d24db1168c312ece3d7" "64ca516f4288e3be9694c295f4a098802131b93dd07bfd52d8a5d578ae8f0a2e" "ed98d5f543bf9b2f8da75378eef59977a4d47a7e36410218cd4ac542fd3d7143" "7944a0d11f4b87e645b5c99c3f8072f77d0ba3b71938b31385372141ef88aad0" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
+   '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(doxymacs-doxygen-style "C++")
  '(flycheck-keymap-prefix "c")
- '(org-babel-load-languages (quote ((shell . t) (emacs-lisp . t))))
+ '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   (quote
-    (cmake-ide cmake-mode multi-term ggtags magit exec-path-from-shell go-mode helm zenburn-theme yasnippet xcscope window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode)))
+   '(lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit  go-mode helm  yasnippet  window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
@@ -142,14 +147,14 @@
 )
 
 ;; 总是启动 server 模式，应对每次 emacs 启动缓慢问题                10:52 2016/12/15
- ;(setq server-auth-dir "~/server";)
- ;(setq server-name "emacs_server")
-(defadvice server-ensure-safe-dir (around
-                    my-around-server-ensure-safe-dir
-                    activate)
-       "Ignores any errors raised from server-ensure-safe-dir"
-       (ignore-errors ad-do-it))
- (server-start)
+;; (setq server-auth-dir "~/server";)
+;; (setq server-name "emacs_server")
+;; (defadvice server-ensure-safe-dir (around
+;;                     my-around-server-ensure-safe-dir
+;;                     activate)
+;;        "Ignores any errors raised from server-ensure-safe-dir"
+;;        (ignore-errors ad-do-it))
+;;  (server-start)
 
 ;; disable welcome page
 (setq inhibit-startup-message t)
@@ -268,8 +273,6 @@
 ;; | (_| (_) | |) | || .` | (_ |
 ;;  \___\___/|___/___|_|\_|\___|
 
-;; 编译快捷键
-(global-set-key [(f7)] 'cmake-ide-compile)
 
 ;; 块注释快捷键                                                     16:05 2013/03/06
 (global-set-key (kbd "C-c C-r") 'comment-region)
@@ -345,12 +348,12 @@
 
 ;; 添加新的 ELPA 插件源                                             03:41 2016/07/10
 (require 'package)
-(add-to-list 'package-archives'
-             ("elpa" . "http://tromey.com/elpa/") t)
-;; (add-to-list 'package-archives'
-;;       ("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives'
-             ("melpa"    . "http://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives' ("marmalade" . "http://marmalade-repo.org/packages/") t)
+;; (add-to-list 'package-archives' ("melpa-m"   . "http://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives' ("elpa"      . "http://tromey.com/elpa/") t)
+;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa"     . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("gnu"       . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 
 ;; __  ____  ____  ____  ____  ____  ____  ____  __  ____    _    ____ ___ ____  __  ____  ____  ____  ____  ____  ____  ____  __
@@ -359,23 +362,6 @@
 ;;  /  \  /  \  /  \  /  \  /  \  /  \  /  \  /  \  | |_) / ___ \ ___) | | |___   /  \  /  \  /  \  /  \  /  \  /  \  /  \  /  \
 ;; /_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\ |____/_/   \_\____/___\____| /_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\/_/\_\
 
-;;  _____  _____ ___    ___  _ _____ _  _     ___ ___  ___  __  __     ___ _  _
-;; | __\ \/ / __/ __|__| _ \/_\_   _| || |___| __| _ \/ _ \|  \/  |___/ __| || |
-;; | _| >  <| _| (_|___|  _/ _ \| | | __ |___| _||   / (_) | |\/| |___\__ \ __ |
-;; |___/_/\_\___\___|  |_|/_/ \_\_| |_||_|   |_| |_|_\\___/|_|  |_|   |___/_||_|
-
-;; PATH env set same as the shell                                   00:40 2017/09/10
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-;;  _______ _  _ ___ _   _ ___ _  _    _____ _  _ ___ __  __ ___
-;; |_  / __| \| | _ ) | | | _ \ \| |__|_   _| || | __|  \/  | __|
-;;  / /| _|| .` | _ \ |_| |   / .` |___|| | | __ | _|| |\/| | _|
-;; /___|___|_|\_|___/\___/|_|_\_|\_|    |_| |_||_|___|_|  |_|___|
-
-;; zenburn-theme 主题
-(require 'zenburn-theme)
 
 ;;   ___ _  _ ___ _  _ ___ ___ ___    ___ ___  _  _ _____ ___     ___ ___ _____
 ;;  / __| || |_ _| \| | __/ __| __|__| __/ _ \| \| |_   _/ __|___/ __| __|_   _|
@@ -427,7 +413,7 @@
 ;; |___|____|___\___| |_| |_|_\___\___|
 
 ;; electric-mode 自动括号配对补全
-(require 'electric)
+;; (require 'electric)
 ;; 编辑时智能缩进，类似于C-j的效果——这个C-j中，zencoding和electric-pair-mode冲突
 (electric-indent-mode t)
 ;; 系统本身内置的智能自动补全括号(felix 表示爱死啦！！！)
@@ -461,12 +447,12 @@
 
 ;; 符号语法高亮
 ;; 欢迎使用 highlight-symbol 提供的 C-x w . 高亮当前 symbol，表示手动更好使
-(require 'highlight-symbol)
+;; (require 'highlight-symbol)
 ;; (global-set-key [(control f3)] 'highlight-symbol)
-(global-set-key (kbd "C-c w") 'highlight-symbol-at-point)
+;; (global-set-key (kbd "C-c w") 'highlight-symbol-at-point)
 ;; (global-set-key [(shift f3)] 'highlight-symbol-prev)
 ;; (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
-;; (add-hook 'c-mode-common-hook 'highlight-symbol-mode)
+;; (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
 ;; 高亮缩进(影响翻页速度，放弃)                                              13:41 2016/12/15
 ;; (require 'highlight-indentation)
@@ -542,8 +528,12 @@
 ;; |_||_|___|____|_|  |_|
 
 ;; helm (ELPA 安装) 管理文件与buffer（与ido 类型）
+(require 'helm)
 (require 'helm-config)
 (global-set-key (kbd "M-X") 'helm-M-x)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 (helm-mode 1)
 
 ;;  _____  _____  _   _  _ ___      ___ ___ ___ ___ ___  _  _
@@ -552,7 +542,6 @@
 ;; |___/_/\_\_|/_/ \_\_|\_|___/    |_|_\___\___|___\___/|_|\_|
 
 ;; expand-region
-;; 似乎已经内置了呀
 (require 'expand-region)
 (defun er/mark-line ()
   "Marks this line."
@@ -560,7 +549,6 @@
   (move-beginning-of-line 1)
   (set-mark (point))
   (move-end-of-line 1))
-
 (global-set-key (kbd "C-c m") 'er/expand-region)
 (global-set-key (kbd "C-c l") 'er/mark-line)
 (global-set-key (kbd "C-c [") 'er/mark-word)
@@ -624,34 +612,9 @@
 ;; projectile
 (setq projectile-enable-caching t)
 (global-set-key [f5] 'projectile-find-file)
-(global-set-key [f7] 'projectile-compile-project)
 (add-hook 'c-mode-common-hook
           'projectile-mode)
 ;; (projectile-global-mode)
-
-;; __  _____ ___  ___ ___  ___ ___
-;; \ \/ / __/ __|/ __/ _ \| _ \ __|
-;;  >  < (__\__ \ (_| (_) |  _/ _|
-;; /_/\_\___|___/\___\___/|_| |___|
-
-;; xcscope 代码跳转
-(require 'xcscope)
-(add-hook 'c-mode-common-hook
-          '(lambda()
-             (cscope-setup)
-             ))
-
-;;   ___ _____ _   ___ ___
-;;  / __|_   _/_\ / __/ __|
-;; | (_ | | |/ _ \ (_ \__ \
-;;  \___| |_/_/ \_\___|___/
-
-(require 'ggtags)
-(add-hook 'c-mode-common-hook
-          '(lambda()
-             (ggtags-mode)
-             ))
-(setq gtags-suggested-key-mapping t)
 
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
 ;; | __| |\ \ / / __| || | __/ __| |/ /
@@ -663,7 +626,7 @@
 ;; update comment at 20:47 2020/05/24
 (require 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
-;;; (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;;
 ;; cmake-ide
@@ -671,6 +634,7 @@
 ;; 15:20 2020/05/30
 ;;
 (cmake-ide-setup)
+(global-set-key [(f7)] 'cmake-ide-compile) ;; 编译快捷键
 
 ;; __   ___   ___ _  _ ___ ___ ___ ___ _____
 ;; \ \ / /_\ / __| \| |_ _| _ \ _ \ __|_   _|
@@ -679,11 +643,9 @@
 
 ;; yasnippet 模板系统
 (require 'yasnippet)
-;; 启动后自动启用补全
-(add-hook 'after-init-hook 'yas-global-mode)
+(add-hook 'after-init-hook 'yas-global-mode) ;; 启动后自动启用补全
 (global-set-key (kbd "C-c C-y") 'yas-insert-snippet)
-;; 在有region 时将其内容替换到 $0 占位符处
-(setq yas-wrap-around-region t)
+(setq yas-wrap-around-region t)              ;; 在有region 时将其内容替换到 $0 占位符处
 
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
@@ -729,22 +691,12 @@
 (require 'go-mode)
 (add-hook 'before-save-hook #'gofmt-before-save)
 
-;;  ___ _    ___ __  __ ___
-;; / __| |  |_ _|  \/  | __|
-;; \__ \ |__ | || |\/| | _|
-;; |___/____|___|_|  |_|___|
-
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
-(add-to-list 'load-path "~/.emacs.d/slime-2.19/")
-(require 'slime)
-(slime-setup)
-
 ;;  __  __   _   ___ ___ _____
 ;; |  \/  | /_\ / __|_ _|_   _|
 ;; | |\/| |/ _ \ (_ || |  | |
 ;; |_|  |_/_/ \_\___|___| |_|
 
-(require 'magit)
+;; (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;  _____   _______ _  _  ___  _  _
@@ -760,10 +712,10 @@
 ;;
 (put 'downcase-region 'disabled nil)
 
-;;  ___ ___ ___  ___  _  _     __  __  ___  ___  ___
-;; | _ )_ _/ __|/ _ \| \| |___|  \/  |/ _ \|   \| __|
-;; | _ \| |\__ \ (_) | .` |___| |\/| | (_) | |) | _|
-;; |___/___|___/\___/|_|\_|   |_|  |_|\___/|___/|___|
-;; 23:35 2021/06/15
-(require 'bison-mode)
+;;
+;; lsp-mode
+;;
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
 ;;; .emacs ends here
