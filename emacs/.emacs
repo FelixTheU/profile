@@ -50,6 +50,12 @@
 ;;;                               5. package: 移除 slime package 与 配置, 不写 Lisp 好多年了; 移除 exec-from-shell, 似乎只在 mac 下需要;
 ;;;                               7. package: 移除 server-start 配置，当 Emacs 以 client 连接到同一个 Emacs server 如果当前有多个 project 则 .dir-locals 会干扰;
 ;;;                               9. 快捷键：将 F7 快捷键配置为 cmake-ide-compile; 调整 helm 中 TAB 键作为补全，之前默认进行 action 太难用了;
+;;; record_20 19:59 2022/05/30 -> 1. 快捷键: 将 C-x C-f 设置为 helm-find-files, 补全效果比 Emacs 自动的要好;
+;;;                               2. package: 通过设置 projectile 的 projectile-command-map 配置其触发命令依旧为: C-c p;
+;;;                               3. package: cmake-ide 在遇到 .h 文件时会尝试在其所有目录下寻找同名的 .cpp 文件并使用将 cflags 编译 .h,
+;;;                                           当不存在是会询问是否创建; 通过设置 cmake-ide-header-search-other-file 将其关闭;
+;;;                               4. package: 关闭 lsp-mode 的补全功能, 其使用的 company-capf 在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
+;;;                               5. package: 添加 yasnippet-snippets package;
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -78,7 +84,7 @@
  '(flycheck-keymap-prefix "c")
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   '(lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit  go-mode helm  yasnippet  window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode))
+   '(lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit go-mode helm yasnippet yasnippet-snippets window-number tabbar srefactor sr-speedbar s projectile popup neotree mode-compile idle-highlight highlight-symbol highlight-parentheses highlight-indentation goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight chinese-fonts-setup async ace-jump-mode))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
@@ -531,6 +537,7 @@
 (require 'helm)
 (require 'helm-config)
 (global-set-key (kbd "M-X") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
@@ -610,10 +617,11 @@
 ;; |_| |_|_\\___/ \__/|___\___| |_| |___|____|___|
 
 ;; projectile
+(require 'projectile)
 (setq projectile-enable-caching t)
+(add-hook 'c-mode-common-hook 'projectile-mode)
 (global-set-key [f5] 'projectile-find-file)
-(add-hook 'c-mode-common-hook
-          'projectile-mode)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 ;; (projectile-global-mode)
 
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
@@ -634,6 +642,7 @@
 ;; 15:20 2020/05/30
 ;;
 (cmake-ide-setup)
+(setq cmake-ide-header-search-other-file nil)
 (global-set-key [(f7)] 'cmake-ide-compile) ;; 编译快捷键
 
 ;; __   ___   ___ _  _ ___ ___ ___ ___ _____
@@ -665,7 +674,6 @@
           '(lambda()
              (add-to-list 'company-backends
                           'company-c-headers)))
-
 ;;  ___   _____  ____   ____  __   _   ___ ___
 ;; |   \ / _ \ \/ /\ \ / /  \/  | /_\ / __/ __|
 ;; | |) | (_) >  <  \ V /| |\/| |/ _ \ (__\__ \
@@ -714,8 +722,12 @@
 
 ;;
 ;; lsp-mode
+;; - lsp-completion-enable 启用后配合 company-capf 补全，
+;;   在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
+;;   company-mode 配合 clang 已经够用了.
 ;;
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+(setq lsp-completion-enable nil)
 
 ;;; .emacs ends here
