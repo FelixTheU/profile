@@ -46,16 +46,21 @@
 ;;;                               2. package: 在 package-list 中进行 update 操作升级过旧的 packages(通过 'u' 命令), 否则 lsp-mode 无法正常使用;
 ;;;                               3. package: 移除 bison-mode(Emacs 已经内置);
 ;;;                               4. package: 移除 cscope、gtags, 使用 lsp-mode 作为替代; 移除 highlight-symbol, lsp-mode 中的高亮效果较好;
-;;;                               4. package: 移除 zenburn 主题，使用 spacemacs-theme 替换, zenburn 在配合 lsp-mode 下进行符号高亮上没有效果;
-;;;                               5. package: 移除 slime package 与 配置, 不写 Lisp 好多年了; 移除 exec-from-shell, 似乎只在 mac 下需要;
+;;;                               5. package: 移除 zenburn 主题，使用 spacemacs-theme 替换, zenburn 在配合 lsp-mode 下进行符号高亮上没有效果;
+;;;                               6. package: 移除 slime package 与 配置, 不写 Lisp 好多年了; 移除 exec-from-shell, 似乎只在 mac 下需要;
 ;;;                               7. package: 移除 server-start 配置，当 Emacs 以 client 连接到同一个 Emacs server 如果当前有多个 project 则 .dir-locals 会干扰;
-;;;                               9. 快捷键：将 F7 快捷键配置为 cmake-ide-compile; 调整 helm 中 TAB 键作为补全，之前默认进行 action 太难用了;
+;;;                               8. 快捷键：将 F7 快捷键配置为 cmake-ide-compile; 调整 helm 中 TAB 键作为补全，之前默认进行 action 太难用了;
 ;;; record_20 19:59 2022/05/30 -> 1. 快捷键: 将 C-x C-f 设置为 helm-find-files, 补全效果比 Emacs 自动的要好;
 ;;;                               2. package: 通过设置 projectile 的 projectile-command-map 配置其触发命令依旧为: C-c p;
 ;;;                               3. package: cmake-ide 在遇到 .h 文件时会尝试在其所有目录下寻找同名的 .cpp 文件并使用将 cflags 编译 .h,
 ;;;                                           当不存在是会询问是否创建; 通过设置 cmake-ide-header-search-other-file 将其关闭;
 ;;;                               4. package: 关闭 lsp-mode 的补全功能, 其使用的 company-capf 在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
 ;;;                               5. package: 添加 yasnippet-snippets package;
+;;; record_17 10:31 2022/01/06 -> 1. flycheck 检测增加延迟, 频繁 check 会导致延迟，影响输入体验;
+;;;                               2. 在保存之前执行的操作中，当 before-save-delete-trailing-whitespace 为 nil 时, 不执行 delete-trailing-whitespace;
+;;;                                                          当不在 go-mode 时, 保存之前不执行 gofmt-before-save;
+;;;                               3. 说明: 本修改最初完成于 workspace, 时间为: 22:01 2022/06/01;
+
 ;;; code:
 
 ;;   ___ _   _ ___ _____ ___  __  __     ___ ___ _____  __   ___   ___ ___   _
@@ -118,7 +123,12 @@
              ))
 
 ;; 保存时删除行尾的空白                                             09:07 2017/09/10
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; 通过 before-save-delete-trailing-whitespace 控制是否删除行尾空白
+(setq-default before-save-delete-trailing-whitespace t)
+(make-variable-buffer-local 'before-save-delete-trailing-whitespace)
+(add-hook 'before-save-hook '(lambda()
+                               (when before-save-delete-trailing-whitespace (delete-trailing-whitespace))
+                               ))
 
 ;; 保存时将 tab 调整为 空格
 ;; ref: https://www.emacswiki.org/emacs/UntabifyUponSave
@@ -635,6 +645,8 @@
 (require 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+(setq flycheck-idle-change-delay 3)
 
 ;;
 ;; cmake-ide
@@ -697,7 +709,7 @@
 
 ;; 保存文件的时候对该源文件做一下gofmt                                      09:30 2017/09/10
 (require 'go-mode)
-(add-hook 'before-save-hook #'gofmt-before-save)
+(add-hook 'before-save-hook '(lambda() (when (derived-mode-p 'go-mode) (gofmt-before-save))))
 
 ;;  __  __   _   ___ ___ _____
 ;; |  \/  | /_\ / __|_ _|_   _|
