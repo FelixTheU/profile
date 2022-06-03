@@ -1,0 +1,69 @@
+changelog of emacs profile
+author: zhengsw@yview.cn
+date: 16:10 2022/06/03
+
+17:28 2022/06/03
+1) 移除不需要的 elpa 源:
+;; (add-to-list 'package-archives' ("marmalade" . "http://marmalade-repo.org/packages/") t)
+;; (add-to-list 'package-archives' ("melpa-m"   . "http://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives' ("elpa"      . "http://tromey.com/elpa/") t)
+;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+2) 调整为多文件分类进行组织 init.el 配置文件;
+
+;;; record_00 04:32 2016/07/10 -> 配置各种插件，补全、代码跳转、代码导航等
+;;; record_01 13:00 2016/08/29 -> 添加 expand-region 和 highlight-symbol
+;;; record_02 20:15 2016/12/07 -> 解决在 shell 中运行时报没有 tty 字体问题;
+;;;                               重新实现 if-zero-code 对换行结尾的区域更友好
+;;; record_03 13:51 2016/12/15 -> 解决 tramp 打开远程文件或者 /su::/root/... 输入显示卡死问题
+;;;                               加入行高亮，列高亮功能
+;;;                               默认总是启用 server 模式，随时准备 emacsclient 极速连接
+;;; record_04 09:55 2016/12/28 -> 添加 highlight-parentheses 插件，彩色高亮配对括号
+;;; record_05 10:38 2016/12/30 -> 将 tab 替换为空格只在编程语言模式下生效，tab 对于 Makefile 很重要
+;;; record_06 12:50 2017/09/10 -> 添加 slime，go-mode 以及 exec-path-from-shell.并且重新调整文件结构，进行分类整理
+;;; record_07 13:15 2018/01/29 -> 配置 windows 版本下的 tramp 默认使用 plink 进行远程连接
+;;; record_08 23:44 2018/01/30 -> 添加 gtags, magit, 以及配置 python-mode 下缩进为4个空格
+;;; record_09 00:14 2018/03/22 -> 添加 align-regexp 快捷键(C-c |), 调整 align 快捷键为 C-c \;
+;;;                               添加一众 er/mark-xxx 快捷键；
+;;;                               屏蔽 idle-highlight, 总是高亮光标所在处的话又和选中一个颜色，不太友好
+;;; record_10 00:16 2018/03/23 -> 添加 yasnippet ya-insert-snippet 快捷键为 C-c C-y, 当有 region 使用 ya-insert-snippet 时
+;;;                               默认将 region 使用 $0 内容保留.
+;;; record_11 17:30 2018/05/09 -> 调整 align 快捷键为 C-c \, align-regexp 为 C-c |;
+;;;                               打开 (require 'expand-region)，虽然内置了，还是需要加载;
+;;;                               设置 C++ 默认编码风格为 linux style;
+;;;                               使用 highlight-symbol 提供的 C-x w . 手动高亮当前 symbol 更好的哟
+;;; record_12 11:13 2018/07/14 -> highlight-symbol-at-point 快捷键调整为 C-c w
+;;;                               er/mark-word   快捷键设置为 C-c [
+;;;                               er/mark-symbol 快捷键设置为 C-c ]
+;;;                               projectile-compile-project 快捷键设置为 F7
+;;; record_13 18:59 2018/07/21 -> 将 win/.emacs 中对 windows 的特别处理代码(主要为解决 emacs25 卡顿问题)合并到本文件
+;;;                               设置 password-cache-expiry 为 nil(默认值为 16), tramp 模式下的远程密码将不再失效
+;;; record_14 14:54 2019/11/24 -> 添加 "TAB and SPACE" 一节，高亮显示 buffer 中的 tab 与 trailing space;
+;;;                               在 buffer 保存时自动进行 a) 移除 trailing space, b) 将 tab 转换为 空格;
+;;; record_15 20:50 2020/05/24 -> 添加 cmake-mode 与 flycheck-clangcheck, multi-term:
+;;;                               cmake-mode 用于编辑 CMakeLists.txt 文件，补全比较方便；
+;;;                               flycheck-clangcheck 使用 clang-check 进行静态代码分析，可读入 compile_commands.json 文件配置编译参数;
+;;;                               添加"c/c++ offset settings." 一节，对于 class 中的 inline member function 不进行缩进;
+;;; record_16 15:24 2020/05/30 -> 1. [aha] 移除 flycheck-clangcheck, 发现了更好用的 cmake-ide 自动为 company, flycheck(clang) 设置相应 flags;
+;;;                                  无需额外配置，补全与静态代码检查就能很好地工作;
+;;;                               2. 将 "TAB and SPACE" 一节调整位置，与 "custom-set-face 将 whitespace 与 tab 设置颜色"放到一起;
+;;; record_17 23:17 2021/06/15 -> 1. 配置 f7 为 cmake-ide-compile 命令;
+;;;                               2. 仅在 prog-mode 下才开启 display-line-number-mode;
+;;; record_18 23:36 2021/06/15 -> 增加 bison-mode 支持 flex 与 bison 文件的编辑;
+;;; record_19 12:58 2022/04/28 -> 1. package: 修改 elpa 源，melpa 源已经调整为 https 协议;
+;;;                               2. package: 在 package-list 中进行 update 操作升级过旧的 packages(通过 'u' 命令), 否则 lsp-mode 无法正常使用;
+;;;                               3. package: 移除 bison-mode(Emacs 已经内置);
+;;;                               4. package: 移除 cscope、gtags, 使用 lsp-mode 作为替代; 移除 highlight-symbol, lsp-mode 中的高亮效果较好;
+;;;                               5. package: 移除 zenburn 主题，使用 spacemacs-theme 替换, zenburn 在配合 lsp-mode 下进行符号高亮上没有效果;
+;;;                               6. package: 移除 slime package 与 配置, 不写 Lisp 好多年了; 移除 exec-from-shell, 似乎只在 mac 下需要;
+;;;                               7. package: 移除 server-start 配置，当 Emacs 以 client 连接到同一个 Emacs server 如果当前有多个 project 则 .dir-locals 会干扰;
+;;;                               8. 快捷键：将 F7 快捷键配置为 cmake-ide-compile; 调整 helm 中 TAB 键作为补全，之前默认进行 action 太难用了;
+;;; record_20 19:59 2022/05/30 -> 1. 快捷键: 将 C-x C-f 设置为 helm-find-files, 补全效果比 Emacs 自动的要好;
+;;;                               2. package: 通过设置 projectile 的 projectile-command-map 配置其触发命令依旧为: C-c p;
+;;;                               3. package: cmake-ide 在遇到 .h 文件时会尝试在其所有目录下寻找同名的 .cpp 文件并使用将 cflags 编译 .h,
+;;;                                           当不存在是会询问是否创建; 通过设置 cmake-ide-header-search-other-file 将其关闭;
+;;;                               4. package: 关闭 lsp-mode 的补全功能, 其使用的 company-capf 在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
+;;;                               5. package: 添加 yasnippet-snippets package;
+;;; record_17 10:31 2022/01/06 -> 1. flycheck 检测增加延迟, 频繁 check 会导致延迟，影响输入体验;
+;;;                               2. 在保存之前执行的操作中，当 before-save-delete-trailing-whitespace 为 nil 时, 不执行 delete-trailing-whitespace;
+;;;                                                          当不在 go-mode 时, 保存之前不执行 gofmt-before-save;
+;;;                               3. 说明: 本修改最初完成于 workspace, 时间为: 22:01 2022/06/01;
