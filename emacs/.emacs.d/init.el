@@ -13,14 +13,14 @@
 
 ;; 设置 emacs custom-file
 ;; 该文件会被 emacs 定制变量时进行修改
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.emacs.d/config/custom.el")
 
 ;; 加载各类配置
-(load "~/.emacs.d/custom.el")
-(load "~/.emacs.d/settings.el")
-(load "~/.emacs.d/utils.el")
-(load "~/.emacs.d/editing.el")
-(load "~/.emacs.d/prog-basic.el")
-(load "~/.emacs.d/prog-lang.el")
+(load "~/.emacs.d/config/custom.el")
+(load "~/.emacs.d/config/settings.el")
+(load "~/.emacs.d/config/utils.el")
+(load "~/.emacs.d/config/editing.el")
+(load "~/.emacs.d/config/prog-basic.el")
+(load "~/.emacs.d/config/prog-lang.el")
 
 ;;; init.el ends here
