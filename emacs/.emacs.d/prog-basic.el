@@ -4,6 +4,10 @@
 ;;; mail:ifelixzheng@163.com
 ;;; date: 16:18 2022/06/03
 
+;; window number, 使用 M-num 即可进行窗口切换
+(require 'window-number)
+(add-hook 'after-init-hook 'window-number-meta-mode)
+
 ;; 在 prog-mode 下才显示行号                                        23:13 2021/06/15
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (column-number-mode)
@@ -16,14 +20,12 @@
 (global-set-key (kbd "C-c f") 'c-mark-function)
 
 ;; 显示所在函数                                                     17:52 2016/12/15
-(add-hook 'prog-mode-hook 'which-function-mode)
+;; (add-hook 'prog-mode-hook 'which-function-mode)
 
 ;; imenu jump (跳转当前文件中函数)
 (define-key global-map (kbd "C-c o") 'imenu)
 
 ;; 代码折叠 09:28 2016/11/14
-(add-hook 'c-mode-hook 'hs-minor-mode)
-(add-hook 'c++-mode-hook 'hs-minor-mode)
 (global-set-key (kbd "C-c C-j") 'hs-toggle-hiding)
 (global-set-key (kbd "C-c C-k") 'hs-hide-level)
 
@@ -58,16 +60,6 @@
             (if (equal (substring region-text -1) "\n") "" "\n") ; 最后一个字符是否是换行
             "#endif")))
 (global-set-key (kbd "C-c 0") 'if-zero-code)
-
-;; 将被 if 屏蔽掉的代码置为灰色
-(require 'hideif)
-(setq hide-ifdef-initially t)
-(add-hook 'c-mode-common-hook
-      (lambda ()
-        (setq hide-ifdef-shadow t)
-        (setq hide-ifdef-mode t)
-        (hide-ifdefs)
-        ))
 
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
 ;; | __| |\ \ / / __| || | __/ __| |/ /
@@ -132,13 +124,13 @@
 
 ;; sr-speedbar show in current frame
 ;; 目录树文件、代码管理
-(require 'sr-speedbar)
+;; (require 'sr-speedbar)
 ;; (setq sr-speedbar-right-side nil)
- (setq sr-speedbar-width 42)
- (global-set-key (kbd "<f8>") 'sr-speedbar-toggle)
-(setq speedbar-use-images nil)
+ ;; (setq sr-speedbar-width 42)
+;;  (global-set-key (kbd "<f8>") 'sr-speedbar-toggle)
+;; (setq speedbar-use-images nil)
 ;; 在speedbar 中关闭显示行号功能
-(add-hook 'speedbar-mode-hook '(lambda () (linum-mode -1)))
+;; (add-hook 'speedbar-mode-hook '(lambda () (linum-mode -1)))
 
 ;;  _  _ ___ ___ _____ ___ ___ ___
 ;; | \| | __/ _ \_   _| _ \ __| __|
@@ -148,8 +140,8 @@
 ;; neotree 项目文件管理
 ;; (不能查看代码中函数，但可以管理文件的创建与删除)
 ;; 作为 sr-speedbar 的补充
-(require 'neotree)
-(global-set-key (kbd "M-8") 'neotree-toggle)
+;; (require 'neotree)
+;; (global-set-key (kbd "M-8") 'neotree-toggle)
 
 ;; __  ____  ____  ____  ____  ____  ____  ____  __  ____  _______     __ __  ____  ____  ____  ____  ____  ____  ____  __
 ;; \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ / |  _ \| ____\ \   / / \ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /

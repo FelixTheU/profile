@@ -1,12 +1,8 @@
-;;; misc --- Felix's .emacs
+;;; utils --- Felix's .emacs
 ;;; commentary:
 ;;; author: Felix Zheng.
 ;;; mail:ifelixzheng@163.com
 ;;; date: 16:18 2022/06/03
-
-;; window number, 使用 M-num 即可进行窗口切换
-(require 'window-number)
-(add-hook 'after-init-hook 'window-number-meta-mode)
 
 ;; 将当前文件以管理员权限重新打开                                   16:04 2016/12/15
 (defun find-alternative-file-with-sudo ()

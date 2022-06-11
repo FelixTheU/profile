@@ -18,10 +18,9 @@
 ;; 加载各类配置
 (load "~/.emacs.d/custom.el")
 (load "~/.emacs.d/settings.el")
-(load "~/.emacs.d/misc.el")
+(load "~/.emacs.d/utils.el")
 (load "~/.emacs.d/editing.el")
 (load "~/.emacs.d/prog-basic.el")
-(load "~/.emacs.d/prog-c-cpp.el")
-(load "~/.emacs.d/prog-etc.el")
+(load "~/.emacs.d/prog-lang.el")
 
 ;;; init.el ends here

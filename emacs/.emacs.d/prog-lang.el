@@ -1,4 +1,4 @@
-;;; prog-c-cpp --- Felix's .emacs
+;;; prog-lang --- Felix's .emacs
 ;;; commentary:
 ;;; author: Felix Zheng.
 ;;; mail:ifelixzheng@163.com
@@ -42,8 +42,24 @@
   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
       (doxymacs-font-lock)))
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-(add-hook 'c-mode-common-hook 'doxymacs-mode)
-(add-hook 'c++-mode-common-hook 'doxymacs-mode)
 
-(provide 'prog-c-cpp)
+;;   ___  ___      __  __  ___  ___  ___
+;;  / __|/ _ \ ___|  \/  |/ _ \|   \| __|
+;; | (_ | (_) |___| |\/| | (_) | |) | _|
+;;  \___|\___/    |_|  |_|\___/|___/|___|
+
+;; 保存文件的时候对该源文件做一下gofmt                                      09:30 2017/09/10
+(require 'go-mode)
+(add-hook 'before-save-hook '(lambda() (when (derived-mode-p 'go-mode) (gofmt-before-save))))
+
+
+;;  _____   _______ _  _  ___  _  _
+;; | _ \ \ / /_   _| || |/ _ \| \| |
+;; |  _/\ V /  | | | __ | (_) | .` |
+;; |_|   |_|   |_| |_||_|\___/|_|\_|
+
+(add-hook 'python-mode-hook
+          (lambda () (setq tab-width 4)))
+
+(provide 'prog-lang)
 ;;; prog-c-cpp.el ends here

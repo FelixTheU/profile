@@ -102,30 +102,30 @@
 ;;  \___|_||_|___|_|\_|___|___/___|  |_| \___/|_|\_| |_| |___/   |___/___| |_|
 
 ;; 中文等宽字体设置插件
-(require 'chinese-fonts-setup)
+;; (require 'chinese-fonts-setup)
 ;; 让 chinese-fonts-setup 随着 emacs 自动生效。
-(chinese-fonts-setup-enable)
+;; (chinese-fonts-setup-enable)
 ;; 让 spacemacs mode-line 中的 Unicode 图标正确显示。
-(cfs-set-spacemacs-fallback-fonts)
+;; (cfs-set-spacemacs-fallback-fonts)
 
 ;; 设置中文等宽字体，有中英文对齐的功效
-(set-face-attribute
- 'default nil
- :font (font-spec :name "-APPL-Monaco-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
-                  :weight 'normal
-                  :slant 'normal
-                  :size 11.5))          ;; ever 12
+;; (set-face-attribute
+;;  'default nil
+;;  :font (font-spec :name "-APPL-Monaco-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
+;;                   :weight 'normal
+;;                   :slant 'normal
+;;                   :size 11.5))          ;; ever 12
 
 ; 仅在图形界面下设置字体                        19:26 2016/12/07
-(if (display-graphic-p)
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font
-       (frame-parameter nil 'font)
-       charset
-       (font-spec :name "-WenQ-文泉驿等宽正黑-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
-                  :weight 'normal
-                  :slant 'normal
-                  :size 13.0))))        ;; ever 14
+;; (if (display-graphic-p)
+;;     (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;       (set-fontset-font
+;;        (frame-parameter nil 'font)
+;;        charset
+;;        (font-spec :name "-WenQ-文泉驿等宽正黑-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
+;;                   :weight 'normal
+;;                   :slant 'normal
+;;                   :size 13.0))))        ;; ever 14
 
 (provide 'settings)
 ;;; settings.el ends here
