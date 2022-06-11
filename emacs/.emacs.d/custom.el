@@ -25,7 +25,7 @@
  '(flycheck-keymap-prefix "c")
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   '(lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit go-mode helm yasnippet yasnippet-snippets window-number tabbar srefactor s projectile popup mode-compile highlight-parentheses goto-last-change flycheck figlet expand-region doxymacs company-c-headers column-marker col-highlight async ace-jump-mode))
+   '(spacemacs-theme lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit go-mode helm yasnippet yasnippet-snippets tabbar srefactor s projectile popup mode-compile highlight-parentheses goto-last-change flycheck figlet expand-region company-c-headers async ace-jump-mode))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")

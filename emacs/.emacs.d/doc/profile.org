@@ -45,3 +45,17 @@
   | popup                 | 不明          |          |      |           |      |
   | s                     | 不明          |          |      |           |      |
   |-----------------------+---------------+----------+------+-----------+------|
+
+* packages ever used
+  - col-highlight
+  - column-marker
+  - window-number
+  - which-function-mode,
+  - hs-minor-mode,
+  - sr-speedbar,
+  - neo-tree,
+  - doxymacs-mode,
+  - chinese-fonts-setup,
+  - idle-highlight,
+  - highlight-symbol,
+  - highlight-indentation;
