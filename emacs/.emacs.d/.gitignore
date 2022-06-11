@@ -6,3 +6,5 @@ elpa/archives/*
 /.lsp-session-v1
 /server/
 /transient/
+/var/
+/etc/

@@ -20,6 +20,9 @@
 ;; 将备份文件保存到指定目录
 (setq backup-directory-alist (quote (("." . "~/.backups"))))
 
+;; 保持 .emacs.d 干净，必要的内容会放到 etc 目录下
+(require 'no-littering)
+
 ;; 启动后默认全屏显示  默认已经绑定到 F11 了                        23:58 2017/06/18
 ;; (toggle-frame-fullscreen)
 
