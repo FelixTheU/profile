@@ -6,10 +6,20 @@
 
 ;;; code:
 
+;; init package
 (require 'package)                               ;; 03:41 2016/07/10
 (add-to-list 'package-archives '("melpa"     . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu"       . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
+
+;; init use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-always-defer 2
+        use-package-expand-minimally t))
 
 ;; 设置 emacs custom-file
 ;; 该文件会被 emacs 定制变量时进行修改

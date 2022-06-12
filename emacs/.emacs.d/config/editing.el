@@ -10,29 +10,18 @@
 ;; /_/ \_\___|___|   \__/ \___/|_|  |_|_|
 
 ;; ace-jump jump easily （跳转真棒）
-(require 'ace-jump-mode)
-;; ace jump mode major function;;
-(autoload  'ace-jump-mode  "ace-jump-mode"
-  "Emacs quick move minor mode"
-  t)
-(define-key global-map (kbd "C-c i") 'ace-jump-char-mode) ; i for where i want
-(define-key global-map (kbd "C-c h") 'ace-jump-mode)      ; h for word's head char
-;; enable a more powerful jump back function from ace jump mode-compile;;
-(autoload  'ace-jump-mode-pop-mark
-  "ace-jump-mode"
-  "Ace jump back:-)"
-  t)
-(eval-after-load "ace-jump-mode"
-  '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(use-package ace-jump-mode
+  :config (ace-jump-mode-enable-mark-sync)
+  :bind (("C-c h" . ace-jump-mode)
+         ("C-c i" . ace-jump-char-mode)
+         ("C-x SPC" . ace-jump-mode-pop-mark)))
 
 ;;  ___ ___ ___ _    ___ _____
 ;; | __|_ _/ __| |  | __|_   _|
 ;; | _| | | (_ | |__| _|  | |
 ;; |_| |___\___|____|___| |_|
-
-(require 'figlet)
-(define-key global-map (kbd "C-c C-f") 'figlet-comment)
+(use-package figlet
+  :bind ("C-c C-f" . figlet-comment))
 
 ;;  _____  _____  _   _  _ ___      ___ ___ ___ ___ ___  _  _
 ;; | __\ \/ / _ \/_\ | \| |   \ ___| _ \ __/ __|_ _/ _ \| \| |
@@ -40,18 +29,19 @@
 ;; |___/_/\_\_|/_/ \_\_|\_|___/    |_|_\___\___|___\___/|_|\_|
 
 ;; expand-region
-(require 'expand-region)
-(defun er/mark-line ()
-  "Marks this line."
-  (interactive)
-  (move-beginning-of-line 1)
-  (set-mark (point))
-  (move-end-of-line 1))
-(global-set-key (kbd "C-c m") 'er/expand-region)
-(global-set-key (kbd "C-c l") 'er/mark-line)
-(global-set-key (kbd "C-c [") 'er/mark-word)
-(global-set-key (kbd "C-c ]") 'er/mark-symbol)
-
+(use-package expand-region
+  :config
+  (defun er/mark-line ()
+    "Marks this line."
+    (interactive)
+    (move-beginning-of-line 1)
+    (set-mark (point))
+    (move-end-of-line 1))
+  :bind (("C-c m" . er/expand-region)
+         ("C-c l" . er/mark-line)
+         ("C-c [" . er/mark-word)
+         ("C-c ]" . er/mark-symbol)
+         ))
 ;;  __  __ _   _ _  _____ ___ ___ _    ___     ___ _   _ ___  ___  ___  ___  ___
 ;; |  \/  | | | | ||_   _|_ _| _ \ |  | __|__ / __| | | | _ \/ __|/ _ \| _ \/ __|
 ;; | |\/| | |_| | |__| |  | ||  _/ |__| _|___| (__| |_| |   /\__ \ (_) |   /\__ \
@@ -67,8 +57,8 @@
 
 ;; goto-last-change
 ;; 回到上次编辑的地方
-(require 'goto-last-change)
-(global-set-key (kbd "C-c ,") 'goto-last-change)
+(use-package goto-last-change
+  :bind ("C-c ," . goto-last-change))
 
 ;; __   ___   ___ _  _ ___ ___ ___ ___ _____
 ;; \ \ / /_\ / __| \| |_ _| _ \ _ \ __|_   _|
@@ -76,10 +66,11 @@
 ;;   |_/_/ \_\___/_|\_|___|_| |_| |___| |_|
 
 ;; yasnippet 模板系统
-(require 'yasnippet)
-(add-hook 'after-init-hook 'yas-global-mode) ;; 启动后自动启用补全
-(global-set-key (kbd "C-c C-y") 'yas-insert-snippet)
-(setq yas-wrap-around-region t)              ;; 在有region 时将其内容替换到 $0 占位符处
+(use-package yasnippet-snippets)
+(use-package yasnippet
+  :hook ((after-init) . yas-global-mode)
+  :bind ("C-c C-y" . yas-insert-snippet)
+  :custom (yas-wrap-around-region t "在有region 时将其内容替换到 $0 占位符处"))
 
 ;;  _  _ ___ ___ _  _ _    ___ ___ _  _ _____    ___  _   ___ ___ _  _ _____ _  _
 ;; | || |_ _/ __| || | |  |_ _/ __| || |_   _|__| _ \/_\ | _ \ __| \| |_   _| || |
@@ -87,12 +78,13 @@
 ;; |_||_|___\___|_||_|____|___\___|_||_| |_|    |_|/_/ \_\_|_\___|_|\_| |_| |_||_|
 
 ;; 括号配对高亮
-(require 'highlight-parentheses)
-(define-globalized-minor-mode global-highlight-parentheses-mode
-  highlight-parentheses-mode
-  (lambda ()
-    (highlight-parentheses-mode t)))
-(global-highlight-parentheses-mode t)
+(use-package highlight-parentheses
+  :config
+  (define-globalized-minor-mode global-highlight-parentheses-mode
+    highlight-parentheses-mode
+    (lambda ()
+      (highlight-parentheses-mode t)))
+  :hook ((prog-mode) . global-highlight-parentheses-mode))
 
 ;;  ___ _    ___ ___ _____ ___ ___ ___
 ;; | __| |  | __/ __|_   _| _ \_ _/ __|

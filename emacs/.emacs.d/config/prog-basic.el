@@ -5,8 +5,8 @@
 ;;; date: 16:18 2022/06/03
 
 ;; window number, 使用 M-num 即可进行窗口切换
-(require 'window-number)
-(add-hook 'after-init-hook 'window-number-meta-mode)
+(use-package window-number
+              :hook (after-init . window-number-meta-mode))
 
 ;; 在 prog-mode 下才显示行号                                        23:13 2021/06/15
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -69,19 +69,18 @@
 ;; flycheck 实时语法检查
 ;; 需要搭配 clang 使用效果方好
 ;; update comment at 20:47 2020/05/24
-(require 'flycheck)
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
-(setq flycheck-idle-change-delay 3)
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode)
+  :custom
+  (flycheck-check-syntax-automatically '(save idle-change mode-enabled) "check syntax automatically")
+  (flycheck-idle-change-delay 3 "idle-change-delay"))
 
 ;;  __  __   _   ___ ___ _____
 ;; |  \/  | /_\ / __|_ _|_   _|
 ;; | |\/| |/ _ \ (_ || |  | |
 ;; |_|  |_/_/ \_\___|___| |_|
-
-;; (require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :bind ("C-x g" . magit-status))
 
 ;;  _  _ ___ _    __  __
 ;; | || | __| |  |  \/  |
@@ -89,14 +88,16 @@
 ;; |_||_|___|____|_|  |_|
 
 ;; helm (ELPA 安装) 管理文件与buffer（与ido 类型）
-(require 'helm)
-(require 'helm-config)
-(global-set-key (kbd "M-X") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-(helm-mode 1)
+(use-package helm
+  :bind (("M-X" . helm-M-x)
+         ("C-x C-f" . helm-find-files))
+  :bind (:map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("TAB" . helm-execute-persistent-action)
+         ("C-i" . helm-execute-persistent-action)
+         ("C-z" . helm-select-action))
+  :preface (require 'helm-config)
+  :hook (after-init . helm-mode))
 
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
@@ -106,16 +107,12 @@
 ;; company 补全配置
 ;; c/c++ mode 下搭配 clang 可发挥较好的补全效果
 ;; update comment at 20:46 2020/05/24
-(add-hook 'prog-mode-hook 'company-mode)
-(setq company-idle-delay 0)    ; 无延迟，总是自动进行补全
-;; 绑定补全快捷键
-(global-set-key (kbd "C-c j") 'company-complete-common)
-;; 添加补全后端，补全头文件
-;; 或者 hook global-company-mode-hook
-(add-hook 'c-mode-common-hook
-          '(lambda()
-             (add-to-list 'company-backends
-                          'company-c-headers)))
+(use-package company-c-headers)
+(use-package company-mode
+  :hook (prog-mode . company-mode)
+  :bind ("C-c j" . 'company-complete-common)
+  :custom (company-idle-delay 0 "no delay")
+  :config (add-to-list 'company-backends 'company-c-headers))
 
 ;;  ___ ___     ___ ___ ___ ___ ___  ___   _   ___
 ;; / __| _ \___/ __| _ \ __| __|   \| _ ) /_\ | _ \
@@ -155,12 +152,11 @@
 ;; |_| |_|_\\___/ \__/|___\___| |_| |___|____|___|
 
 ;; projectile
-(require 'projectile)
-(setq projectile-enable-caching t)
-(add-hook 'c-mode-common-hook 'projectile-mode)
-(global-set-key [f5] 'projectile-find-file)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-;; (projectile-global-mode)
+(use-package projectile
+  :hook (c-mode-common . projectile-mode)
+  :bind (([f5] . projectile-find-file)
+         :map projectile-mode-map
+         ("C-c p" . projectile-command-map)))
 
 (provide 'prog-basic)
 ;;; prog-basic.el ends here

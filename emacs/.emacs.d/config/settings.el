@@ -8,6 +8,14 @@
 (setq inhibit-startup-message t)
 (setq gnus-inhibit-startup-message t)
 
+;; Minimize garbage collection during startup
+(setq gc-cons-threshold most-positive-fixnum)
+
+;; Lower threshold back to 8 MiB (default is 800kB)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (expt 2 23))))
+
 ;; 设置窗口默认大小                                                 15:48 2013/03/06
 (setq default-frame-alist '((height . 30) (width . 150)))
 
@@ -21,7 +29,10 @@
 (setq backup-directory-alist (quote (("." . "~/.backups"))))
 
 ;; 保持 .emacs.d 干净，必要的内容会放到 etc 目录下
-(require 'no-littering)
+(use-package no-littering)
+
+;; 使用 spacemacs 主题
+;; (use-package spacemacs-theme)
 
 ;; 启动后默认全屏显示  默认已经绑定到 F11 了                        23:58 2017/06/18
 ;; (toggle-frame-fullscreen)

@@ -16,18 +16,21 @@
 ;;   在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
 ;;   company-mode 配合 clang 已经够用了.
 ;;
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
-(setq lsp-completion-enable nil)
+(use-package lsp-ui)
+(use-package lsp-mode
+  :hook ((c-mode c++-mode) . lsp)
+  :custom (lsp-completion-enable nil "use company-mode to do completion"))
 
 ;;
 ;; cmake-ide
 ;; 自动设置 company, flycheck 等插件需要的 flags,十分贴心.
 ;; 15:20 2020/05/30
 ;;
-(cmake-ide-setup)
-(setq cmake-ide-header-search-other-file nil)
-(global-set-key [(f7)] 'cmake-ide-compile) ;; 编译快捷键
+(use-package cmake-ide
+  :hook (c-mode-common . cmake-ide-setup)
+  :bind ([(f7)] . cmake-ide-compile)
+  :custom (cmake-ide-header-search-other-file nil "do not find other file for header file"))
+(use-package cmake-mode)
 
 ;;  ___   _____  ____   ____  __   _   ___ ___
 ;; |   \ / _ \ \/ /\ \ / /  \/  | /_\ / __/ __|
@@ -35,13 +38,8 @@
 ;; |___/ \___/_/\_\  |_| |_|  |_/_/ \_\___|___/
 
 ;; doxymacs
-(require 'doxymacs)
-;; 注释高亮，针对C和C++程序
-(defun my-doxymacs-font-lock-hook ()
-  "Doxymacs fonts lock . "
-  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-      (doxymacs-font-lock)))
-(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+(use-package doxymacs
+  :hook (font-lock-mode . doxymacs-font-lock))
 
 ;;   ___  ___      __  __  ___  ___  ___
 ;;  / __|/ _ \ ___|  \/  |/ _ \|   \| __|
@@ -49,17 +47,16 @@
 ;;  \___|\___/    |_|  |_|\___/|___/|___|
 
 ;; 保存文件的时候对该源文件做一下gofmt                                      09:30 2017/09/10
-(require 'go-mode)
-(add-hook 'before-save-hook '(lambda() (when (derived-mode-p 'go-mode) (gofmt-before-save))))
-
+(use-package go-mode
+  :hook (before-save . (lambda() (when (derived-mode-p 'go-mode) (gofmt-before-save)))))
 
 ;;  _____   _______ _  _  ___  _  _
 ;; | _ \ \ / /_   _| || |/ _ \| \| |
 ;; |  _/\ V /  | | | __ | (_) | .` |
 ;; |_|   |_|   |_| |_||_|\___/|_|\_|
-
-(add-hook 'python-mode-hook
-          (lambda () (setq tab-width 4)))
+(use-package python-mode
+  :hook (python-mode)
+  :custom (tab-width 4))
 
 (provide 'prog-lang)
 ;;; prog-c-cpp.el ends here

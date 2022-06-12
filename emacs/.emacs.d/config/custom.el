@@ -25,13 +25,12 @@
  '(flycheck-keymap-prefix "c")
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   '(no-littering spacemacs-theme lsp-ui lsp-mode cmake-ide cmake-mode multi-term magit go-mode helm yasnippet yasnippet-snippets tabbar srefactor s projectile popup mode-compile highlight-parentheses goto-last-change flycheck figlet expand-region company-c-headers async ace-jump-mode))
+   '(yasnippet-snippets window-number use-package spacemacs-theme projectile no-littering magit lsp-ui highlight-parentheses helm goto-last-change go-mode flycheck figlet expand-region doxymacs company-c-headers cmake-mode cmake-ide ace-jump-mode))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
  '(server-use-tcp t)
  '(show-paren-mode t)
- '(tab-width 4)
  '(tool-bar-mode nil))
 
 (custom-set-faces
