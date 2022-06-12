@@ -1,10 +1,5 @@
-/auto-save-list/
-elpa/archives/*
-/eshell
-# 仅忽略当前目录下的 projectile* 文件，不忽略子目录下的 projectile*
-/projectile*
-/.lsp-session-v1
+.lsp-session-v1
+/elpa/
 /server/
-/transient/
 /var/
 /etc/
