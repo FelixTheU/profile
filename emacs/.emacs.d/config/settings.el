@@ -29,10 +29,9 @@
 (setq backup-directory-alist (quote (("." . "~/.backups"))))
 
 ;; 保持 .emacs.d 干净，必要的内容会放到 etc 目录下
-(use-package no-littering)
-
-;; 使用 spacemacs 主题
-;; (use-package spacemacs-theme)
+;; 需要及早加载，为其它 package 准备好目录设置
+(use-package no-littering
+  :demand t)
 
 ;; 启动后默认全屏显示  默认已经绑定到 F11 了                        23:58 2017/06/18
 ;; (toggle-frame-fullscreen)
