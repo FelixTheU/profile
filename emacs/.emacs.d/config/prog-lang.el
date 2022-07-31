@@ -18,8 +18,8 @@
 ;;
 (use-package lsp-ui)
 (use-package lsp-mode
-  :hook ((c-mode c++-mode) . lsp)
-  :custom (lsp-completion-enable nil "use company-mode to do completion"))
+  :hook ((c-mode c++-mode python-mode) . lsp)
+  :custom (lsp-completion-enable (not (derived-mode-p 'c-mode 'c++-mode)) "use company-mode to do completion"))
 
 ;;
 ;; cmake-ide
@@ -55,7 +55,6 @@
 ;; |  _/\ V /  | | | __ | (_) | .` |
 ;; |_|   |_|   |_| |_||_|\___/|_|\_|
 (use-package python-mode
-  :hook (python-mode)
   :custom (tab-width 4))
 
 (provide 'prog-lang)
