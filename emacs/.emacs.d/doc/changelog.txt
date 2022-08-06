@@ -2,6 +2,29 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+16:35 2022/08/06
+1) use-package company 配置错误: company 的 package 名字并不叫 'company-mode', 就叫 'company':
+ (use-package company-c-headers)
+ (use-package company-mode
+   :hook (prog-mode . company-mode)
+   :bind ("C-c j" . 'company-complete-common)
+   :custom (company-idle-delay 0 "no delay")
+   :config (add-to-list 'company-backends 'company-c-headers))
+同时移除 package-selected-packages 中 company-mode 项，其会作为 compay-c-headers 的依赖而安装;
+2) 添加 compilation-mode 的 compition-scroll-ouput 配置，滚动到首个错误;
+3) spacemacs-theme 中定义了颜色'highlight'，但是其在 highlight 和 region 场景的 face 的 backgound
+   都设置为了 highlight 颜色，导致 c/c++ 中如果一个符号被高亮了再来进行 mark-region 则无法分辨;
+   所以将 highlight 场景的 face 颜色进行重新设置;
+4) 将 doxymacs 的 use-package :ensure 配置为 nil，不要自动下载，因为 elpa 中已经无法下载到到它了.
+
+16:30 2022/07/31
+1) 调整 use-package 中 python-mode 的配置，以下代码有问题会导致无限递归，要求在 python-mode 时调用 python-mode 来开启 python-mode?
+ (use-package python-mode
+   :hook (python-mode)
+   :custom (tab-width 4))
+2) 在 lsp-mode 中关闭了 lsp-comletion-enable 因为其对于 c++ 头文件的补全效果很糟糕，
+   但是之前的配置中无条件关闭了该功能，修改为只在 c-mode, c++-mode 下禁用 lsp 补全;
+
 17:28 2022/06/03
 1) 移除不需要的 elpa 源:
 ;; (add-to-list 'package-archives' ("marmalade" . "http://marmalade-repo.org/packages/") t)

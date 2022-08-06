@@ -61,6 +61,10 @@
             "#endif")))
 (global-set-key (kbd "C-c 0") 'if-zero-code)
 
+;; compilation-mode
+;; compilation buffer 自动滚动到第一个错误处
+(setq compilation-scroll-output 'first-error)
+
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
 ;; | __| |\ \ / / __| || | __/ __| |/ /
 ;; | _|| |_\ V / (__| __ | _| (__| ' <
@@ -108,11 +112,14 @@
 ;; c/c++ mode 下搭配 clang 可发挥较好的补全效果
 ;; update comment at 20:46 2020/05/24
 (use-package company-c-headers)
-(use-package company-mode
+(use-package company
   :hook (prog-mode . company-mode)
   :bind ("C-c j" . 'company-complete-common)
   :custom (company-idle-delay 0 "no delay")
-  :config (add-to-list 'company-backends 'company-c-headers))
+  :config
+  (push 'company-c-headers company-backends)
+  (global-company-mode t)
+  )
 
 ;;  ___ ___     ___ ___ ___ ___ ___  ___   _   ___
 ;; / __| _ \___/ __| _ \ __| __|   \| _ ) /_\ | _ \

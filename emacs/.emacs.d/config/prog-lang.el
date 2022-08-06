@@ -19,7 +19,8 @@
 (use-package lsp-ui)
 (use-package lsp-mode
   :hook ((c-mode c++-mode python-mode) . lsp)
-  :custom (lsp-completion-enable (not (derived-mode-p 'c-mode 'c++-mode)) "use company-mode to do completion"))
+  :custom (lsp-completion-enable (not (derived-mode-p 'c-mode 'c++-mode)) "use company-mode to do completion")
+  )
 
 ;;
 ;; cmake-ide
@@ -39,6 +40,7 @@
 
 ;; doxymacs
 (use-package doxymacs
+  :ensure nil
   :hook (font-lock-mode . doxymacs-font-lock))
 
 ;;   ___  ___      __  __  ___  ___  ___
