@@ -2,6 +2,11 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+15:48 2022/12/07
+1) emacs 退出时添加确认动作，修改见 config/custom.el 中 (confirm-kill-emacs 'yes-or-no-p);
+2) magit 配置 commit column 长度默认为 100 字符;
+3) lsp-mode 配置变量'lsp-enable-on-type-formatting' 为 nil, 禁止在输入时进行 format;
+
 16:35 2022/08/06
 1) use-package company 配置错误: company 的 package 名字并不叫 'company-mode', 就叫 'company':
  (use-package company-c-headers)

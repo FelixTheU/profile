@@ -20,6 +20,8 @@
 (use-package lsp-mode
   :hook ((c-mode c++-mode python-mode) . lsp)
   :custom (lsp-completion-enable (not (derived-mode-p 'c-mode 'c++-mode)) "use company-mode to do completion")
+  :custom (lsp-enable-on-type-formatting nil)
+  :bind-keymap ("C-c u" . lsp-command-map)
   )
 
 ;;

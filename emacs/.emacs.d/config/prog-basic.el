@@ -84,7 +84,8 @@
 ;; | |\/| |/ _ \ (_ || |  | |
 ;; |_|  |_/_/ \_\___|___| |_|
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :custom (git-commit-fill-column 100))
 
 ;;  _  _ ___ _    __  __
 ;; | || | __| |  |  \/  |
