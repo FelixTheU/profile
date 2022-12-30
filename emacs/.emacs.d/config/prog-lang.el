@@ -30,6 +30,7 @@
 ;; 15:20 2020/05/30
 ;;
 (use-package cmake-ide
+  :disabled
   :hook (c-mode-common . cmake-ide-setup)
   :bind ([(f7)] . cmake-ide-compile)
   :custom (cmake-ide-header-search-other-file nil "do not find other file for header file"))

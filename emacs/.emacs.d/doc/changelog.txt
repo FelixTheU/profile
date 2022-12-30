@@ -2,6 +2,33 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+11:59 2022/12/30
+1) pacakge: 禁用 cmake-ide; cmake-ide 在打开大型项目如 vpp 时，每次打开新文件时都解析 compile_commands.json 导致太慢;
+   - projectile: 将 f7 快捷键绑定为 projectile-compile-project, 并且 compile 之前不 prompt(compilation-read-command 设置为 nil);
+   - projectile: 将 c-c p c 绑定为 compile 之前进行 prompt 的 projectile-compile-project; 没有生效;
+2) customize:
+   - 调整 read-process-output-max(每次读取子进程输出块大小) 变量为 1024k, 加快如 compile_commands.json 的读取;
+   - 调整 gc-cons-threshold(gc 阀值) 为 250MB, 推迟 gc 执行频次，以此提升性能;
+3) 心得:
+   - lsp-mode 使用 clangd 时需要当前文件的直系路径下存在 compile_commands.json 文件, 就可以愉快地使用 lsp-mode, company-mode 了;
+   - compile 是 emacs 自带的编译命令，默认使用 "make -k" 进行编译，工作目录为变量 default-directory 的值;
+   - compile 默认执行前会 prompt, 配置 compilation-read-command 为 nil 可关闭 prompt; 关闭 prompt 之后如果需要临时调整 compile 命令
+     可 C-u compile 则会总是会进行 prompt;
+   - projectile 使用 compile 实现 projectile-compile-project 命令; 通过在 .dir-locals.el 中配置 projectile-project-compilation-cmd
+     与 projectile-project-compilation-dir 可以为项目定制 compile 命令;
+   - projectile-project-compilation-dir 为相对路径，相对 projectile 的项目根路径(如存在 Makefile, .git 等的顶层目录);
+   - projectile 通过在执行 compile 之前配置 default-direcory 变量达到配置 compile 工作目录的效果;
+4) 配置备份:
+尝试根据 .dir-locals.el 决定是否启用 lsp-mode, 定义 local variable 并且指定默认值;
+;; (defvar enable-lsp-mode)
+;; (setq enable-lsp-mode t)
+;; (make-variable-buffer-local 'enable-lsp-mode)
+
+;; (defvar enable-lsp-mode)
+;; (make-variable-buffer-local 'enable-lsp-mode)
+;; (setq-default enable-lsp-mode t)
+
+
 15:48 2022/12/07
 1) emacs 退出时添加确认动作，修改见 config/custom.el 中 (confirm-kill-emacs 'yes-or-no-p);
 2) magit 配置 commit column 长度默认为 100 字符;

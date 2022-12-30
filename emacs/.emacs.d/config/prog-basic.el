@@ -162,9 +162,13 @@
 ;; projectile
 (use-package projectile
   :hook (c-mode-common . projectile-mode)
+  :custom (compilation-read-command nil "don't prompt, just do compile.")
   :bind (([f5] . projectile-find-file)
+         ([f7] . projectile-compile-project)
          :map projectile-mode-map
-         ("C-c p" . projectile-command-map)))
+         ("C-c p" . projectile-command-map))
+  :bind ([remap project-compile-project] . (lambda() (interactive) (projectile-compile-project t))) ; prompting before compiling, don't work!
+)
 
 (provide 'prog-basic)
 ;;; prog-basic.el ends here

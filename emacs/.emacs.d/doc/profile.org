@@ -34,7 +34,7 @@
   | magit                 | 开发-版本管理 |          |      |           |      |
   | multi-term            | 开发-终端     |          |      |           |      |
   | cmake-mode            | 开发-语言模式 |          |      |           |      |
-  | cmake-ide             | 开发-项目管理 |          |      |           |      |
+  | cmake-ide             | 开发-项目管理 |          |      |           | 禁用 |
   | lsp-mode              | 开发-lsp      |          |      |           |      |
   | lsp-ui                | 开发-lsp      |          |      |           |      |
   |-----------------------+---------------+----------+------+-----------+------|
@@ -59,3 +59,18 @@
   - idle-highlight,
   - highlight-symbol,
   - highlight-indentation;
+
+* .dir-locals.el 示例:
+#+BEGIN_SRC emacs-lisp
+((prog-mode . (
+               (eval . (setq projectile-project-compilation-cmd "make build"))
+               (eval . (setq projectile-project-compilation-dir "."))
+
+               (eval . (setq cmake-ide-build-dir (concat (projectile-project-root) "/build-root/build-vpp_debug-native/vpp/")))
+               (eval . (setq cmake-ide-cmake-opts "-DCMAKE_BUILD_TYPE=Debug"))
+               (eval . (setq cmake-ide-compile-cmd (concat "make build -C " (projectile-project-root))))
+
+               (eval . (setq before-save-delete-trailing-whitespace nil))
+               (eval . (setq untabify-this-buffer nil))
+               )))
+#+END_SRC
