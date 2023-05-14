@@ -66,5 +66,11 @@
 (use-package python-mode
   :custom (tab-width 4))
 
+;;  _
+;; | |  _  _ __ _
+;; | |_| || / _` |
+;; |____\_,_\__,_|
+(use-package lua-mode)
+
 (provide 'prog-lang)
 ;;; prog-c-cpp.el ends here

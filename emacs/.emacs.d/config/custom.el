@@ -26,7 +26,7 @@
  '(flycheck-keymap-prefix "c")
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   '(python-mode go-mode yasnippet-snippets window-number use-package projectile no-littering magit lsp-ui highlight-parentheses helm goto-last-change flycheck figlet expand-region doxymacs company-c-headers cmake-mode cmake-ide ace-jump-mode))
+   '(lua-mode python-mode go-mode yasnippet-snippets window-number use-package projectile no-littering magit lsp-ui highlight-parentheses helm goto-last-change flycheck figlet expand-region doxymacs company-c-headers cmake-mode cmake-ide ace-jump-mode))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")
