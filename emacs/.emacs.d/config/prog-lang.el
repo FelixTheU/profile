@@ -10,6 +10,9 @@
 (c-set-offset 'innamespace '0)
 (c-set-offset 'inextern-lang '0)
 
+;; 设置代码着色的力度以增强 emacs 性能，减轻卡顿
+(setq font-lock-maximum-decoration '((c++-mode . 2) (c-mode . 2) (t . t)))
+
 ;;
 ;; lsp-mode
 ;; - lsp-completion-enable 启用后配合 company-capf 补全，

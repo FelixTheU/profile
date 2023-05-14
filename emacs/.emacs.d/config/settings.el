@@ -78,7 +78,6 @@
 ;;   | |/ _ \| _ \ / _` | ' \/ _` | \__ \  _/ _ \ (__| _|
 ;;   |_/_/ \_\___/ \__,_|_||_\__,_| |___/_|/_/ \_\___|___|
 ;; 14:37 2019/11/24
-;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
 (add-hook 'prog-mode-hook
           '(lambda()
              (setq-default indent-tabs-mode nil)
@@ -86,13 +85,14 @@
 
 ;; 保存时删除行尾的空白                                             09:07 2017/09/10
 ;; 通过 before-save-delete-trailing-whitespace 控制是否删除行尾空白
-(setq-default before-save-delete-trailing-whitespace t)
+(setq-default before-save-delete-trailing-whitespace nil)
 (make-variable-buffer-local 'before-save-delete-trailing-whitespace)
 (add-hook 'before-save-hook '(lambda()
                                (when before-save-delete-trailing-whitespace (delete-trailing-whitespace))
                                ))
 
 ;; 保存时将 tab 调整为 空格
+;; 只在编程语言模式下使用空格替换 tab, 比如 Makefile 中 tab 是必须的
 ;; ref: https://www.emacswiki.org/emacs/UntabifyUponSave
 (defvar untabify-this-buffer)
 (defun untabify-all ()
@@ -101,7 +101,8 @@
 (define-minor-mode untabify-mode
   "Untabify buffer on save." nil " untab" nil
   (make-variable-buffer-local 'untabify-this-buffer)
-  (setq untabify-this-buffer (not (derived-mode-p 'makefile-mode)))
+  (setq untabify-this-buffer nil)
+  ;; (setq untabify-this-buffer (not (derived-mode-p 'makefile-mode)))
   (add-hook 'before-save-hook #'untabify-all))
  (add-hook 'prog-mode-hook 'untabify-mode)
 

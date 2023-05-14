@@ -2,6 +2,11 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+11:08 2023/05/14
+1) 导入 org-tempo 以支持 org 快捷语法如 '<s tab' 插入代码块;
+2) font-lock-maximum-decoration 设置代码着色的力度以增强 emacs 性能，减轻卡顿;
+3) 将 before-save-delete-trailing-whitespace, untabify-this-buffer 均设置为默认 nil, 只能手动开启，例如打开一些不规范处理代码空白的源文件进行修改之后会带来大量的 diff;
+
 20:55 2023/01/02
 1) package: 禁用 cmake-ide 之后 company-mode 依赖 clang 进行补全，但 company-clang-args 没有能被配置;
    - lsp-mode: 放开之前禁用的 lsp-completion 补全功能，lsp-completion-enable;

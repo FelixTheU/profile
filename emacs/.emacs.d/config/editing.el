@@ -94,9 +94,15 @@
 ;; electric-mode 自动括号配对补全
 ;; (require 'electric)
 ;; 编辑时智能缩进，类似于C-j的效果——这个C-j中，zencoding和electric-pair-mode冲突
-(electric-indent-mode t)
+
 ;; 系统本身内置的智能自动补全括号(felix 表示爱死啦！！！)
-(electric-pair-mode t)
+;; 比如 org-mode 下的 '<s tab' 不需要让其配对 '<'
+(add-hook 'prog-mode-hook
+          '(lambda()
+             (electric-indent-mode t)
+             (electric-pair-local-mode t)
+             ))
+
 ;; 特定条件下插入新行
 ;; (electric-layout-mode t)
 
@@ -134,6 +140,10 @@
 ;; (setq show-paren-delay 0
 ;;       show-paren-style 'parenthesis)
 ;; (show-paren-mode 1)
+
+;; org-mode
+;; 用来支持 '<s tab' 展开为 org-mode 代码块;
+(require 'org-tempo)
 
 (provide 'editing)
 ;;; editing.el ends here
