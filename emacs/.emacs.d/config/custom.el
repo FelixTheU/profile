@@ -24,6 +24,7 @@
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(doxymacs-doxygen-style "C++")
  '(flycheck-keymap-prefix "c")
+ '(lsp-apply-edits-after-file-operations nil)
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
    '(lua-mode python-mode go-mode yasnippet-snippets window-number use-package projectile no-littering magit lsp-ui highlight-parentheses helm goto-last-change flycheck figlet expand-region doxymacs company-c-headers cmake-mode cmake-ide ace-jump-mode))

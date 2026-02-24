@@ -2,6 +2,11 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+14:21 2026/02/24
+1) helm 添加 'g' 子命令用于执行 helm-do-grep-ag;
+2) projectile 在 c-mode, cmake-mode 下均启用;
+3) lsp 添加配置以禁止它的相关恼人的自动编辑代码行为;
+
 11:08 2023/05/14
 1) 导入 org-tempo 以支持 org 快捷语法如 '<s tab' 插入代码块;
 2) font-lock-maximum-decoration 设置代码着色的力度以增强 emacs 性能，减轻卡顿;

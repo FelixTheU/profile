@@ -26,6 +26,7 @@
 (define-key global-map (kbd "C-c o") 'imenu)
 
 ;; 代码折叠 09:28 2016/11/14
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 (global-set-key (kbd "C-c C-j") 'hs-toggle-hiding)
 (global-set-key (kbd "C-c C-k") 'hs-hide-level)
 
@@ -96,11 +97,12 @@
 (use-package helm
   :bind (("M-X" . helm-M-x)
          ("C-x C-f" . helm-find-files))
-  :bind (:map helm-map
+  :bind (:map helm-command-map
          ("<tab>" . helm-execute-persistent-action)
          ("TAB" . helm-execute-persistent-action)
          ("C-i" . helm-execute-persistent-action)
-         ("C-z" . helm-select-action))
+         ("C-z" . helm-select-action)
+         ("g" .   helm-do-grep-ag))
   :preface (require 'helm-config)
   :hook (after-init . helm-mode))
 
@@ -161,7 +163,7 @@
 
 ;; projectile
 (use-package projectile
-  :hook (c-mode-common . projectile-mode)
+  :hook ((c-mode-common cmake-mode) . projectile-mode)
   :custom (compilation-read-command nil "don't prompt, just do compile.")
   :bind (([f5] . projectile-find-file)
          ([f7] . projectile-compile-project)

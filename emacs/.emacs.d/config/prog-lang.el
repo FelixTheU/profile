@@ -19,12 +19,18 @@
 ;;   在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
 ;;   company-mode 配合 clang 已经够用了.
 ;;
-(use-package lsp-ui)
+(use-package   lsp-ui
+  ;; :disabled
+  )
+
 (use-package lsp-mode
+  ;; :disabled
   :hook ((c-mode c++-mode python-mode) . lsp)
   ;; :custom (lsp-completion-enable (not (derived-mode-p 'c-mode 'c++-mode)) "use company-mode do completion other than lsp-completion.")
   :custom (lsp-completion-enable-additional-text-edit nil "disable lsp-mode edit file, eg. insert include header file.")
   :custom (lsp-enable-on-type-formatting nil)
+  :custom (lsp-before-save-edits nil)
+  :custom (lsp-enable-indentation nil)
   :bind-keymap ("C-c u" . lsp-command-map)
   )
 
