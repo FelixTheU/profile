@@ -2,6 +2,14 @@
 #+AUTHOR: ifelixzheng@163.com
 #+DATE: 2022.06.02
 
+* install packages in a new env
+#+begin_src bash
+  emacs --batch -l profile/emacs/.emacs.d/init.el \
+        --eval "(progn (package-refresh-contents)  (package-install-selected-packages))"
+#+end_src
+  - 当配置好 profile 之后，需要下载 packages, 使用 emacs batch 模式进行 packages 批量安装;
+  - 如果需要使用代理推荐使用 proxychains, 在终端配置 http_proxy 效果并不好(emacs 还是需要解析 dns, 会卡顿);
+
 * packages
   |-----------------------+---------------+----------+------+-----------+------|
   | name                  | 分类          | 使用频率 | 依赖 | mode-line | 说明 |

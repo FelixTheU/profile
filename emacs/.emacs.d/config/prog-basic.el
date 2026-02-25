@@ -103,7 +103,7 @@
          ("C-i" . helm-execute-persistent-action)
          ("C-z" . helm-select-action)
          ("g" .   helm-do-grep-ag))
-  :preface (require 'helm-config)
+  ;; :config (require 'helm-config)
   :hook (after-init . helm-mode))
 
 ;;   ___ ___  __  __ ___  _   _  ___   __

@@ -11,23 +11,26 @@
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
  '(c-default-style
-   '((c-mode . "linux")
-     (c++-mode . "linux")
-     (java-mode . "java")
-     (awk-mode . "awk")
-     (other . "gnu")))
+   '((c-mode . "linux") (c++-mode . "linux") (java-mode . "java")
+	 (awk-mode . "awk") (other . "gnu")))
  '(cfs--current-profile "profile1" t)
  '(cfs--profiles-steps '(("profile1" . 4)) t)
  '(confirm-kill-emacs 'y-or-n-p)
  '(custom-enabled-themes '(spacemacs-dark))
  '(custom-safe-themes
-   '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+   '("01f347a923dd21661412d4c5a7c7655bf17fb311b57ddbdbd6fce87bd7e58de6"
+	 "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476"
+	 default))
  '(doxymacs-doxygen-style "C++")
- '(flycheck-keymap-prefix "c")
+ '(flycheck-keymap-prefix "\3c")
  '(lsp-apply-edits-after-file-operations nil)
  '(org-babel-load-languages '((shell . t) (emacs-lisp . t)))
  '(package-selected-packages
-   '(lua-mode python-mode go-mode yasnippet-snippets window-number use-package projectile no-littering magit lsp-ui highlight-parentheses helm goto-last-change flycheck figlet expand-region doxymacs company-c-headers cmake-mode cmake-ide ace-jump-mode))
+   '(ace-jump-mode no-littering cmake-mode company-c-headers doxymacs
+				   expand-region figlet flycheck go-mode
+				   goto-last-change helm highlight-parentheses lsp-ui
+				   lua-mode magit projectile python-mode
+				   spacemacs-theme window-number yasnippet-snippets))
  '(password-cache-expiry nil)
  '(server-auth-key
    "H_#!ZB<Tjox|)DaeTk@f#*`CuCO@/b~<f^$uI<&+2l{<eryt]Z7v]v22IunOgWw}")

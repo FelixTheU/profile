@@ -2,6 +2,11 @@ changelog of emacs profile
 author: zhengsw@yview.cn
 date: 16:10 2022/06/03
 
+14:51 2026/02/25
+1) init.el 中根据 noninteractive 变量决定是否加载更多配置，以方便新环境时批量下载 packages;
+2) 升级到 emacs 30.2, use-package 已经内置，不再 package-selected-packages 中配置;
+3) 在 doc/profile.org 中添加 'install packages in a new env';
+
 14:21 2026/02/24
 1) helm 添加 'g' 子命令用于执行 helm-do-grep-ag;
 2) projectile 在 c-mode, cmake-mode 下均启用;

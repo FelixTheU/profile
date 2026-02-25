@@ -9,7 +9,7 @@
 ;; init package
 (require 'package)                               ;; 03:41 2016/07/10
 (add-to-list 'package-archives '("melpa"     . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("gnu"       . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives '("gnu"       . "https://elpa.gnu.org/packages/") t)
 (package-initialize)
 
 ;; init use-package
@@ -25,12 +25,15 @@
 ;; 该文件会被 emacs 定制变量时进行修改
 (setq custom-file "~/.emacs.d/config/custom.el")
 
-;; 加载各类配置
+;; 加载配置
 (load "~/.emacs.d/config/custom.el")
-(load "~/.emacs.d/config/settings.el")
-(load "~/.emacs.d/config/utils.el")
-(load "~/.emacs.d/config/editing.el")
-(load "~/.emacs.d/config/prog-basic.el")
-(load "~/.emacs.d/config/prog-lang.el")
+
+;; 以下配置只在 interactive 模式下加载; 便于使用 --batch 模式进行 package 批量安装
+(unless noninteractive
+  (load "~/.emacs.d/config/settings.el")
+  (load "~/.emacs.d/config/utils.el")
+  (load "~/.emacs.d/config/editing.el")
+  (load "~/.emacs.d/config/prog-basic.el")
+  (load "~/.emacs.d/config/prog-lang.el"))
 
 ;;; init.el ends here
