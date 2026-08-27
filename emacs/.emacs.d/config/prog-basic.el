@@ -66,6 +66,11 @@
 ;; compilation buffer 自动滚动到第一个错误处
 (setq compilation-scroll-output 'first-error)
 
+;; 让 compilation-mode 支持 color 转义字符解析，显示为彩色;
+;; 17:36 2026/03/04
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
 ;;  ___ _ __   _____ _  _ ___ ___ _  __
 ;; | __| |\ \ / / __| || | __/ __| |/ /
 ;; | _|| |_\ V / (__| __ | _| (__| ' <
@@ -86,7 +91,9 @@
 ;; |_|  |_/_/ \_\___|___| |_|
 (use-package magit
   :bind ("C-x g" . magit-status)
-  :custom (git-commit-fill-column 100))
+  :custom
+  (git-commit-fill-column 100)
+  (magit-diff-visit-prefer-worktree t))
 
 ;;  _  _ ___ _    __  __
 ;; | || | __| |  |  \/  |
@@ -95,16 +102,56 @@
 
 ;; helm (ELPA 安装) 管理文件与buffer（与ido 类型）
 (use-package helm
+  :disabled
   :bind (("M-X" . helm-M-x)
          ("C-x C-f" . helm-find-files))
   :bind (:map helm-command-map
-         ("<tab>" . helm-execute-persistent-action)
-         ("TAB" . helm-execute-persistent-action)
-         ("C-i" . helm-execute-persistent-action)
-         ("C-z" . helm-select-action)
-         ("g" .   helm-do-grep-ag))
+              ("<tab>" . helm-execute-persistent-action)
+              ("TAB" . helm-execute-persistent-action)
+              ("C-i" . helm-execute-persistent-action)
+              ("C-z" . helm-select-action)
+              ("g" .   helm-do-grep-ag))
   ;; :config (require 'helm-config)
-  :hook (after-init . helm-mode))
+  :demand t
+  :hook (after-init . helm-mode)
+  :config
+  (helm-autoresize-mode 1)
+  (setq helm-buffer-details-flag nil)
+  (setq helm-ff-skip-boring-files t)
+  ;; (setq helm-split-window-in-side-p t)
+  ;; (setq helm-ff-file-name-history-use-recentf t)
+  ;; (setq helm-ff-display-image-preview nil)
+  ;; (setq helm-ff-transformer-show-only-basename t)
+  )
+
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package consult
+  :bind
+  (("C-x b"   . consult-buffer)
+   ("C-c ;"   . consult-git-grep)
+   ;; ("C-x C-f" . find-file)
+   ;; ("M-y"     . consult-yank-pop)
+   ;; ("M-g g"   . consult-goto-line)
+   ;; ("M-g M-g" . consult-goto-line)
+   ;; ("C-s"     . consult-line)
+   ))
+
+(use-package marginalia
+  :disabled
+  :ensure t
+  :init
+  (marginalia-mode)
+  :config
+  (setq marginalia-annotators
+        (assq-delete-all 'file marginalia-annotators)))
 
 ;;   ___ ___  __  __ ___  _   _  ___   __
 ;;  / __/ _ \|  \/  | _ \/_\ | \| \ \ / /
@@ -163,7 +210,7 @@
 
 ;; projectile
 (use-package projectile
-  :hook ((c-mode-common cmake-mode) . projectile-mode)
+  :hook ((c-mode-common cmake-mode makefile-mode) . projectile-mode)
   :custom (compilation-read-command nil "don't prompt, just do compile.")
   :bind (([f5] . projectile-find-file)
          ([f7] . projectile-compile-project)

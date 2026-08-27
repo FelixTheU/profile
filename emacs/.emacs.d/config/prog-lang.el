@@ -19,9 +19,15 @@
 ;;   在 '#include <vector>' 补全时会出来了许多全局符号，禁用;
 ;;   company-mode 配合 clang 已经够用了.
 ;;
-(use-package   lsp-ui
-  ;; :disabled
-  )
+(use-package lsp-ui
+  :after lsp-mode
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-include-signature t)  ;; 显示完整签名
+  :bind  (:map lsp-ui-mode-map
+               ("C-c d" . lsp-ui-doc-show)
+               ("C-c C-d" . lsp-ui-doc-glance)))
 
 (use-package lsp-mode
   ;; :disabled

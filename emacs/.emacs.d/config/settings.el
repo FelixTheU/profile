@@ -20,6 +20,9 @@
 ;; 设置窗口默认大小                                                 15:48 2013/03/06
 (setq default-frame-alist '((height . 30) (width . 150)))
 
+;; 开启像素级平滑滚动                                               15:28 2026/02/25
+(pixel-scroll-precision-mode 1)
+
 ;; 应用所有的目录本地变量                                           09:44 2016/09/07
 (setq enable-local-variables  :all)
 
@@ -80,7 +83,7 @@
 ;; 14:37 2019/11/24
 (add-hook 'prog-mode-hook
           '(lambda()
-             (setq-default indent-tabs-mode nil)
+             (setq indent-tabs-mode nil)
              ))
 
 ;; 保存时删除行尾的空白                                             09:07 2017/09/10
